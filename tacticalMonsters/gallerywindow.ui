@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>galleryWindow</class>
+ <widget class="QWidget" name="galleryWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>960</width>
+    <height>540</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>960</width>
+    <height>540</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>960</width>
+    <height>540</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Gallery</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
+  <widget class="QWidget" name="widget" native="true">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>960</width>
+     <height>540</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>960</width>
+     <height>540</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>960</width>
+     <height>540</height>
+    </size>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">#widget{
+background-image: url(:/src/images/gallery.jpg);
+background-position: center;
+background-repeat: no-repeat;
+}</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

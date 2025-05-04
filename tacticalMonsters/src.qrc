@@ -1,0 +1,23 @@
+<RCC>
+    <qresource prefix="/">
+        <file>src/images/gallery.jpg</file>
+        <file>src/images/main_win _bg.jpg</file>
+        <file>src/images/player_nam_win_bg.jpg</file>
+        <file>src/images/second_win_bg.jpg</file>
+        <file>src/images/game_win_bg.jpg</file>
+        <file>src/images/ground.jpg</file>
+        <file>src/images/play_ground.jpg</file>
+        <file>src/images/stone.jpg</file>
+        <file>src/images/water.jpg</file>
+        <file>src/images/clear-dark-gray-wall_1194-7279.jpg</file>
+        <file>src/images/agent1.png</file>
+        <file>src/images/agent2.jpg</file>
+        <file>src/images/agent3.jpeg</file>
+        <file>src/images/agent4.jpg</file>
+        <file>src/images/diamond.jpg</file>
+        <file>src/images/heart.jpg</file>
+        <file>src/images/money.jpg</file>
+        <file>src/images/power.jpg</file>
+        <file>src/images/select_ground.jpg</file>
+    </qresource>
+</RCC>

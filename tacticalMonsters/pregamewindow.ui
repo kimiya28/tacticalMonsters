@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>preGameWindow</class>
+ <widget class="QWidget" name="preGameWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>960</width>
+    <height>540</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>960</width>
+    <height>540</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>960</width>
+    <height>540</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Tactical Monsters</string>
+  </property>
+  <property name="autoFillBackground">
+   <bool>false</bool>
+  </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
+  <widget class="QWidget" name="widget" native="true">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>960</width>
+     <height>540</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>960</width>
+     <height>540</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>960</width>
+     <height>540</height>
+    </size>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">#widget{
+background-image: url(:/src/images/second_win_bg.jpg);
+}</string>
+   </property>
+   <widget class="QPushButton" name="galleryButton">
+    <property name="geometry">
+     <rect>
+      <x>670</x>
+      <y>110</y>
+      <width>211</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{
+	font: 28pt &quot;Niagara Engraved&quot;;
+	background-color: #fca852;
+	color: #485aa4;
+	border-radius: 20px;
+}
+QPushButton:hover {
+	background-color: #e69542; 
+    }</string>
+    </property>
+    <property name="text">
+     <string>Gallery</string>
+    </property>
+    <property name="default">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="startButton">
+    <property name="geometry">
+     <rect>
+      <x>530</x>
+      <y>40</y>
+      <width>351</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{
+	font: 28pt &quot;Niagara Engraved&quot;;
+	background-color: #fca852;
+	color: #485aa4;
+	border-radius: 20px;
+}
+QPushButton:hover {
+	background-color: #e69542; 
+    }</string>
+    </property>
+    <property name="text">
+     <string>Start an Async PVP Game</string>
+    </property>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

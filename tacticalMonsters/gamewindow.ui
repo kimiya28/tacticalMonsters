@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>gameWindow</class>
+ <widget class="QWidget" name="gameWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>960</width>
+    <height>540</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>960</width>
+    <height>540</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>960</width>
+    <height>540</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>TacticalMonsters</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
+  <widget class="QWidget" name="widget" native="true">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>960</width>
+     <height>540</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>960</width>
+     <height>540</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>960</width>
+     <height>540</height>
+    </size>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">#widget{
+background-image:url(&quot;:/src/images/game_win_bg.jpg&quot;);
+}</string>
+   </property>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>729</x>
+      <y>216</y>
+      <width>71</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#label_2{
+font: 28pt &quot;Niagara Engraved&quot;;
+color:#ffffff;
+}</string>
+    </property>
+    <property name="text">
+     <string>player2</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>130</x>
+      <y>217</y>
+      <width>71</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#label{
+font: 28pt &quot;Niagara Engraved&quot;;
+color:#ffffff;
+}</string>
+    </property>
+    <property name="text">
+     <string>player1</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="startGameButton">
+    <property name="geometry">
+     <rect>
+      <x>340</x>
+      <y>360</y>
+      <width>261</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{
+	background-color: #fca852;
+	color: #485aa4;
+	border-radius: 20px;
+	font: 28pt &quot;Niagara Engraved&quot;;
+}
+QPushButton:hover {
+	background-color: #e69542; 
+    }</string>
+    </property>
+    <property name="text">
+     <string>START GAME</string>
+    </property>
+   </widget>
+   <widget class="QPlainTextEdit" name="player2Name">
+    <property name="geometry">
+     <rect>
+      <x>610</x>
+      <y>260</y>
+      <width>311</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#player2Name{
+background-color:#c24847;
+font: 28pt &quot;Niagara Engraved&quot;;
+color:#ffffff;
+border-radius:22px;
+}</string>
+    </property>
+   </widget>
+   <widget class="QPlainTextEdit" name="player1Name">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>260</y>
+      <width>281</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#player1Name{
+background-color:#3a83c8;
+font: 28pt &quot;Niagara Engraved&quot;;
+color:#ffffff;
+border-radius:22px;
+}</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>370</x>
+      <y>450</y>
+      <width>211</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#label_3{
+font: 28pt &quot;Niagara Engraved&quot;;
+color:#485aa4;
+}</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -1,0 +1,453 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>playingGameWindow</class>
+ <widget class="QWidget" name="playingGameWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>960</width>
+    <height>540</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>960</width>
+    <height>540</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>960</width>
+    <height>540</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Tactical Monsters</string>
+  </property>
+  <widget class="QWidget" name="widget" native="true">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>960</width>
+     <height>540</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>960</width>
+     <height>540</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>960</width>
+     <height>540</height>
+    </size>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
+   <widget class="QWidget" name="player1board" native="true">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>40</y>
+      <width>160</width>
+      <height>440</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>160</width>
+      <height>440</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>160</width>
+      <height>16777215</height>
+     </size>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#player1board{
+background-image:url(:/src/images/clear-dark-gray-wall_1194-7279.jpg);
+border-radius:20px;
+}</string>
+    </property>
+    <widget class="QLabel" name="label">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>141</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLabel{
+	color: #ffffff;
+	border-radius: 20px;
+	font: 28pt &quot;Niagara Engraved&quot;;
+}
+
+</string>
+     </property>
+     <property name="text">
+      <string>PLAYER 1 TEAM </string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QWidget" name="pl1_ag1_widget" native="true">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>69</y>
+       <width>140</width>
+       <height>70</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QWidget{
+background-color: #808080;
+border-radius:10px;
+}</string>
+     </property>
+     <widget class="QWidget" name="pl1_ag1_feature1" native="true">
+      <property name="geometry">
+       <rect>
+        <x>70</x>
+        <y>35</y>
+        <width>25</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#pl1_ag1_feature1{
+background-image:url(:/src/images/diamond.jpg);
+}</string>
+      </property>
+     </widget>
+     <widget class="QWidget" name="pl1_ag1_feature2" native="true">
+      <property name="geometry">
+       <rect>
+        <x>105</x>
+        <y>35</y>
+        <width>25</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#pl1_ag1_feature2{
+background-image:url(:/src/images/heart.jpg);
+}</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pl1_ag1">
+      <property name="geometry">
+       <rect>
+        <x>12</x>
+        <y>12</y>
+        <width>50</width>
+        <height>50</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="pl1_ag2_widget" native="true">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>160</y>
+       <width>140</width>
+       <height>70</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QWidget{
+background-color: #808080;
+border-radius:10px;
+}</string>
+     </property>
+     <widget class="QWidget" name="pl1_ag2_feature1" native="true">
+      <property name="geometry">
+       <rect>
+        <x>70</x>
+        <y>35</y>
+        <width>25</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#pl1_ag2_feature1{
+background-image:url(:/src/images/money.jpg);
+}</string>
+      </property>
+     </widget>
+     <widget class="QWidget" name="pl1_ag2_feature2" native="true">
+      <property name="geometry">
+       <rect>
+        <x>105</x>
+        <y>35</y>
+        <width>25</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#pl1_ag2_feature2{
+background-image:url(:/src/images/power.jpg);
+}</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pl1_ag2">
+      <property name="geometry">
+       <rect>
+        <x>12</x>
+        <y>12</y>
+        <width>50</width>
+        <height>50</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="player2board" native="true">
+    <property name="geometry">
+     <rect>
+      <x>770</x>
+      <y>40</y>
+      <width>160</width>
+      <height>440</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>160</width>
+      <height>440</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>160</width>
+      <height>440</height>
+     </size>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#player2board{
+background-image:url(:/src/images/clear-dark-gray-wall_1194-7279.jpg);
+border-radius:20px;
+}</string>
+    </property>
+    <widget class="QLabel" name="label_2">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>141</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLabel{
+	color: #ffffff;
+	border-radius: 20px;
+	font: 28pt &quot;Niagara Engraved&quot;;
+}</string>
+     </property>
+     <property name="text">
+      <string>PLAYER 2 TEAM</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QWidget" name="pl2_ag1_widget" native="true">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>70</y>
+       <width>140</width>
+       <height>70</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QWidget{
+background-color: #808080;
+border-radius:10px;
+}</string>
+     </property>
+     <widget class="QWidget" name="pl2_ag1_feature1" native="true">
+      <property name="geometry">
+       <rect>
+        <x>70</x>
+        <y>35</y>
+        <width>25</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#pl2_ag1_feature1{
+background-image:url(:/src/images/power.jpg);
+}</string>
+      </property>
+     </widget>
+     <widget class="QWidget" name="pl2_ag1_feature2" native="true">
+      <property name="geometry">
+       <rect>
+        <x>105</x>
+        <y>35</y>
+        <width>25</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#pl2_ag1_feature2{
+background-image:url(:/src/images/heart.jpg);
+}</string>
+      </property>
+     </widget>
+     <widget class="QWidget" name="pl2_ag1" native="true">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>50</width>
+        <height>50</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#pl2_ag1{
+background-image:url(:/src/images/agent3.jpeg);
+}
+</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="pl2_ag2_widget" native="true">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>160</y>
+       <width>140</width>
+       <height>70</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QWidget{
+background-color: #808080;
+border-radius:10px;
+}</string>
+     </property>
+     <widget class="QWidget" name="pl2_ag2_feature1" native="true">
+      <property name="geometry">
+       <rect>
+        <x>70</x>
+        <y>35</y>
+        <width>25</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#pl2_ag2_feature1{
+background-image:url(:/src/images/diamond.jpg);
+background-repeat:no-repeat;
+background-position:center;
+background-attachment:fixed;
+backgroung-size:cover;
+}</string>
+      </property>
+     </widget>
+     <widget class="QWidget" name="pl2_ag2_feature2" native="true">
+      <property name="geometry">
+       <rect>
+        <x>105</x>
+        <y>35</y>
+        <width>25</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#pl2_ag2_feature2{
+background-image:url(:/src/images/money.jpg);
+}</string>
+      </property>
+     </widget>
+     <widget class="QWidget" name="pl2_ag2" native="true">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>50</width>
+        <height>50</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#pl2_ag2{
+background-image:url(:/src/images/agent4.jpg);
+}
+</string>
+      </property>
+     </widget>
+    </widget>
+   </widget>
+   <widget class="QFrame" name="frame">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>961</width>
+      <height>541</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-image:url(&quot;:/src/images/play_ground.jpg&quot;);</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::Shape::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Shadow::Raised</enum>
+    </property>
+   </widget>
+   <widget class="QLabel" name="messageBox">
+    <property name="geometry">
+     <rect>
+      <x>320</x>
+      <y>460</y>
+      <width>320</width>
+      <height>40</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">    color: #ffffff;
+	font: 28pt &quot;Niagara Engraved&quot;;
+</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignmentFlag::AlignCenter</set>
+    </property>
+   </widget>
+   <zorder>frame</zorder>
+   <zorder>player1board</zorder>
+   <zorder>player2board</zorder>
+   <zorder>messageBox</zorder>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
