@@ -34,7 +34,7 @@ playingGameWindow::playingGameWindow(QWidget *parent)
     , ui(new Ui::playingGameWindow)
 {
     ui->setupUi(this);
-    ui->pl1_ag1->setStyleSheet(
+    /*ui->pl1_ag1->setStyleSheet(
         "#pl1_ag1{"
         "border-image:url(:/src/images/agent1.png) 0 0 0 0 stretch stretch;"
         "border-radius:12px;"
@@ -45,7 +45,7 @@ playingGameWindow::playingGameWindow(QWidget *parent)
         "border-image:url(:/src/images/agent2.jpg) 0 0 0 0 stretch stretch;"
         "border-radius:12px;"
         "}"
-        );
+        );*/
 }
 
 QPolygonF playingGameWindow::createHexagon(QPointF center, double size){

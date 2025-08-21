@@ -1,4 +1,4 @@
-#include "pregamewindow.h"
+ #include "pregamewindow.h"
 #include "ui_pregamewindow.h"
 
 preGameWindow::preGameWindow(QWidget *parent)

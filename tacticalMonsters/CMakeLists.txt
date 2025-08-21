@@ -31,6 +31,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         playinggamewindow.h playinggamewindow.cpp playinggamewindow.ui
         playerClass.cpp
         playerClass.h
+        classes.h classes.cpp
+
 
 
 

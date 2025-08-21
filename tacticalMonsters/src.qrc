@@ -19,5 +19,29 @@
         <file>src/images/money.jpg</file>
         <file>src/images/power.jpg</file>
         <file>src/images/select_ground.jpg</file>
+        <file>src/images/Agent/Billy.png</file>
+        <file>src/images/Agent/Reketon.png</file>
+        <file>src/images/Agent/Angus.png</file>
+        <file>src/images/Agent/Duraham.png</file>
+        <file>src/images/Agent/Colonel Baba.png</file>
+        <file>src/images/Agent/Medusa.png</file>
+        <file>src/images/Agent/Bunka.png</file>
+        <file>src/images/Agent/Sanka.png</file>
+        <file>src/images/Agent/Sir Lamorak.png</file>
+        <file>src/images/Agent/Kabu.png</file>
+        <file>src/images/Agent/Rajakal.png</file>
+        <file>src/images/Agent/Salih.png</file>
+        <file>src/images/Agent/Khan.png</file>
+        <file>src/images/Agent/Boi.png</file>
+        <file>src/images/Agent/Eloi.png</file>
+        <file>src/images/Agent/Kanar.png</file>
+        <file>src/images/Agent/Elsa.png</file>
+        <file>src/images/Agent/Karissa.png</file>
+        <file>src/images/Agent/Sir Philip.png</file>
+        <file>src/images/Agent/Frost.png</file>
+        <file>src/images/Agent/Tusk.png</file>
+        <file>src/images/Agent/Rambu.png</file>
+        <file>src/images/Agent/Sabrina.png</file>
+        <file>src/images/Agent/Death.png</file>
     </qresource>
 </RCC>
