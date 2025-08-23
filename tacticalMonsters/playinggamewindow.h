@@ -20,9 +20,7 @@ public:
     void openFile();
     void createHexButton(int index);
     void hexagonClicked(int index);
-    void bfsSet(int startIndex, int index, int hexCount);
-    void findNeighbors();
-    void updateHexButton(int index);
+    void connectNeighbors(int hexCount);
 
 private slots:
 

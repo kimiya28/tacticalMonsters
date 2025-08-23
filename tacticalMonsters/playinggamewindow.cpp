@@ -13,17 +13,12 @@
 #include "string"
 #include <QDir>
 #include <QRandomGenerator>
-#include <queue>
-#include <vector>
 
 using namespace std;
 
 int playerRound = 1;
 int roundCounter = 0;
-int startHex ;
-int targetIndex ;
 string attacker = "";
-bool startSelection = true;
 bool targetSelection = false;
 bool agentSelector = true;
 bool pl1_ag1_clicked = false;
@@ -46,24 +41,21 @@ bool pl2_ag2_selected = true;
 bool pl2_ag3_selected = true;
 bool pl2_ag4_selected = true;
 
-WaterWalking Billy1(320, 3, 90, 1,true,true,false,false);
-WaterWalking Reketon1(320, 2, 80, 2,true,true,false,false);
-WaterWalking Angus1(400, 2, 100, 1,true,true,false,false);
-WaterWalking Duraham1(320, 2, 100, 2,true,true,false,false);
+WaterWalking Billy1(320, 3, 90, 1);
+WaterWalking Reketon1(320, 2, 80, 2);
+WaterWalking Angus1(400, 2, 100, 1);
+WaterWalking Duraham1(320, 2, 100, 2);
 
-WaterWalking Billy2(320, 3, 90, 1,true,true,false,false);
-WaterWalking Reketon2(320, 2, 80, 2,true,true,false,false);
-WaterWalking Angus2(400, 2, 100, 1,true,true,false,false);
-WaterWalking Duraham2(320, 2, 100, 2,true,true,false,false);
+WaterWalking Billy2(320, 3, 90, 1);
+WaterWalking Reketon2(320, 2, 80, 2);
+WaterWalking Angus2(400, 2, 100, 1);
+WaterWalking Duraham2(320, 2, 100, 2);
 
 struct hexagon {
     int centerX;
     int centerY;
-    int row = 0;
-    int col = 0;
-    int bfsLevel;
-    bool visited;
-    bool walkable;
+    int row;
+    int col;
     string id;
     string color;
     string bgPath;
@@ -154,6 +146,8 @@ void playingGameWindow::openFile()
                     offset = 1.5;
                 hexa[hexCount].centerX = ((col * 3) - offset) * hexSize + (width / 3.2);
                 hexa[hexCount].centerY = row * (hexHeight / 2) + height / 6;
+                hexa[hexCount].row = row;
+                hexa[hexCount].col = col;
                 if(line[position + 1] == " "){
                     id = ".";
                     hexa[hexCount].bgPath = ":/src/images/ground.jpg";
@@ -185,25 +179,59 @@ void playingGameWindow::openFile()
                     col += 1;
                 }
                 hexa[hexCount].id = id;
-                createHexButton(hexCount);
                 qDebug()<< row << col << hexCount;
-                hexa[hexCount].row = row;
-                hexa[hexCount].col = col;
+                createHexButton(hexCount);
                 hexCount ++;
+
             }
             position++;
         }
         row++;
-        col = 0;
+        col = 0 ;
         if(row == 10)
             break;
     }
 
     mapFile.close();
-    findNeighbors();
+    connectNeighbors(hexCount);
+    if(hexa[12].top !=nullptr)
+        qDebug()<<QString::fromStdString( hexa[12].top->id);
+    else
+        qDebug()<< "null";
 }
 
+void playingGameWindow::connectNeighbors(int hexCount) {
+    for (int i = 0; i < hexCount; i++) {
+        int r = hexa[i].row;
+        int c = hexa[i].col;
 
+        for (int j = 0; j < hexCount; j++) {
+            if (i == j) continue;
+
+            int jr = hexa[j].row;
+            int jc = hexa[j].col;
+
+            // بالا و پایین
+            if (jr == r - 1 && jc == c)
+                hexa[i].top = &hexa[j];
+            else if (jr == r + 1 && jc == c)
+                hexa[i].bottom = &hexa[j];
+
+            // گوشه‌ها بسته به زوج/فرد بودن ردیف
+            if (r % 2 == 0) {
+                if (jr == r - 1 && jc == c - 1) hexa[i].topLeft = &hexa[j];
+                if (jr == r - 1 && jc == c)     hexa[i].topRight = &hexa[j];
+                if (jr == r + 1 && jc == c - 1) hexa[i].bottomLeft = &hexa[j];
+                if (jr == r + 1 && jc == c)     hexa[i].bottomRight = &hexa[j];
+            } else {
+                if (jr == r - 1 && jc == c)     hexa[i].topLeft = &hexa[j];
+                if (jr == r - 1 && jc == c + 1) hexa[i].topRight = &hexa[j];
+                if (jr == r + 1 && jc == c)     hexa[i].bottomLeft = &hexa[j];
+                if (jr == r + 1 && jc == c + 1) hexa[i].bottomRight = &hexa[j];
+            }
+        }
+    }
+}
 
 void playingGameWindow::createHexButton(int index){
     double hexSize = 40;
@@ -264,9 +292,24 @@ void playingGameWindow::hexagonClicked(int index){
             for(int i = 0; i < 41; i++){
                 if(hexa[i].bgPath == ":/src/images/select_ground.jpg") {
                     hexa[i].bgPath = ":/src/images/ground.jpg";
+                    QPixmap pixmap(hexButton[i]->size());
+                    pixmap.fill(Qt::transparent);
 
-                    updateHexButton(i);
+                    QPainter painter(&pixmap);
+                    painter.setRenderHint(QPainter::Antialiasing);
 
+                    QPolygonF hex = createHexagon(QPointF(pixmap.width() / 2, pixmap.height() / 2), 48);
+                    QPainterPath path;
+                    path.addPolygon(hex);
+                    painter.setClipPath(path);
+
+                    QPixmap bgPixmap(QString::fromStdString(hexa[i].bgPath));
+                    painter.drawPixmap(pixmap.rect(), bgPixmap, bgPixmap.rect());
+
+                    painter.end();
+
+                    hexButton[i]->setIcon(QIcon(pixmap));
+                    hexButton[i]->setIconSize(hexButton[i]->size());
                 }
             }
             if(pl1_ag1_clicked){
@@ -284,23 +327,179 @@ void playingGameWindow::hexagonClicked(int index){
             }
 
 
-            updateHexButton(index);
+            QPixmap pixmap(hexButton[index]->size());
+            pixmap.fill(Qt::transparent);
 
+            QPainter painter(&pixmap);
+            painter.setRenderHint(QPainter::Antialiasing);
 
-        } else if(hexa[index].id == "1" && hexa[index].bgPath != ":/src/images/ground.jpg" && startSelection == true){
+            QPolygonF hex = createHexagon(QPointF(pixmap.width() / 2, pixmap.height() / 2), 48);
+            QPainterPath path;
+            path.addPolygon(hex);
+            painter.setClipPath(path);
+
+            QPixmap bgPixmap(QString::fromStdString(hexa[index].bgPath));
+            painter.drawPixmap(pixmap.rect(), bgPixmap, bgPixmap.rect());
+
+            painter.end();
+
+            hexButton[index]->setIcon(QIcon(pixmap));
+            hexButton[index]->setIconSize(hexButton[index]->size());
+
+        } else if(hexa[index].id == "1" && hexa[index].bgPath != ":/src/images/ground.jpg"){
             ui->messageBox->setText("now select your target");
             targetSelection = true;
-            startHex = index ;
-            startSelection = false ;
+            if(hexa[index].bgPath == ":/src/images/Agent/Billy.png")
+                attacker = "Billy1";
+            if(hexa[index].bgPath == ":/src/images/Agent/Reketon.png")
+                attacker = "Reketon1";
+            if(hexa[index].bgPath == ":/src/images/Agent/Angus.png")
+                attacker = "Angus1";
+            if(hexa[index].bgPath == ":/src/images/Agent/Duraham.png")
+                attacker = "Duraham1";
+        } else if(hexa[index].id == "2" && hexa[index].bgPath != ":/src/images/ground.jpg" && targetSelection){
+            if(hexa[index].bgPath == ":/src/images/Agent/Billy.png"){
+                if(attacker == "Billy1"){
+                    Billy2.setHP(Billy2.getHP() - Billy1.getDamage());
+                    Billy1.setHP(Billy1.getHP() - Billy2.getDamage() / 2);
+                    ui->textBrowser->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                    ui->textBrowser->setText("HP: "+QString::number(Billy1.getHP())+"\nMobility: 3\nDamage: 90\nAttackRange: 1");
+                    ui->textBrowser_13->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                    ui->textBrowser_13->setText("HP: "+QString::number(Billy2.getHP())+"\nMobility: 3\nDamage: 90\nAttackRange: 1");
+                }
+                if(attacker == "Reketon1"){
+                    Billy2.setHP(Billy2.getHP() - Reketon1.getDamage());
+                    Reketon1.setHP(Reketon1.getHP() - Billy2.getDamage() / 2);
+                    ui->textBrowser_2->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                    ui->textBrowser_2->setText("HP: "+QString::number(Reketon1.getHP())+"\nMobility: 2\nDamage: 80\nAttackRange: 2");
+                    ui->textBrowser_13->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                    ui->textBrowser_13->setText("HP: "+QString::number(Billy2.getHP())+"\nMobility: 3\nDamage: 90\nAttackRange: 1");
 
-        } else if(startSelection == false && targetSelection == true){
+                }
+                if(attacker == "Angus1"){
+                    Billy2.setHP(Billy2.getHP() - Angus1.getDamage());
+                    Angus1.setHP(Angus1.getHP() - Billy2.getDamage() / 2);
+                    ui->textBrowser_3->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                    ui->textBrowser_3->setText("HP: "+QString::number(Angus1.getHP())+"\nMobility: 2\nDamage: 100\nAttackRange: 1");
+                    ui->textBrowser_13->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                    ui->textBrowser_13->setText("HP: "+QString::number(Billy2.getHP())+"\nMobility: 3\nDamage: 90\nAttackRange: 1");
 
+                }
+                if(attacker == "Duraham1"){
+                    Billy2.setHP(Billy2.getHP() - Duraham1.getDamage());
+                    Duraham1.setHP(Duraham1.getHP() - Billy2.getDamage() / 2);
+                    ui->textBrowser_4->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                    ui->textBrowser_4->setText("HP: "+QString::number(Duraham1.getHP())+"\nMobility: 2\nDamage: 100\nAttackRange: 1");
+                    ui->textBrowser_13->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                    ui->textBrowser_13->setText("HP: "+QString::number(Billy2.getHP())+"\nMobility: 3\nDamage: 90\nAttackRange: 1");
+                }
+            }
 
-            targetIndex = index ;
-            bfsSet(startHex, targetIndex , 41);
+            if(hexa[index].bgPath == ":/src/images/Agent/Reketon.png"){
+                if(attacker == "Billy1"){
+                    Reketon2.setHP(Reketon2.getHP() - Billy1.getDamage());
+                    Billy1.setHP(Billy1.getHP() - Reketon2.getDamage() / 2);
+                    ui->textBrowser->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                    ui->textBrowser->setText("HP: "+QString::number(Billy1.getHP())+"\nMobility: 3\nDamage: 90\nAttackRange: 1");
+                    ui->textBrowser_29->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                    ui->textBrowser_29->setText("HP: "+QString::number(Reketon2.getHP())+"\nMobility: 2\nDamage: 80\nAttackRange: 2");
+                }
+                if(attacker == "Reketon1"){
+                    Reketon2.setHP(Reketon2.getHP() - Reketon1.getDamage());
+                    Reketon1.setHP(Reketon1.getHP() - Reketon2.getDamage() / 2);
+                    ui->textBrowser_2->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                    ui->textBrowser_2->setText("HP: "+QString::number(Reketon1.getHP())+"\nMobility: 2\nDamage: 80\nAttackRange: 2");
+                    ui->textBrowser_29->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                    ui->textBrowser_29->setText("HP: "+QString::number(Reketon2.getHP())+"\nMobility: 2\nDamage: 80\nAttackRange: 2");
+                }
+                if(attacker == "Angus1"){
+                    Reketon2.setHP(Reketon2.getHP() - Angus1.getDamage());
+                    Angus1.setHP(Angus1.getHP() - Reketon2.getDamage() / 2);
+                    ui->textBrowser_3->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                    ui->textBrowser_3->setText("HP: "+QString::number(Angus1.getHP())+"\nMobility: 2\nDamage: 100\nAttackRange: 1");
+                    ui->textBrowser_29->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                    ui->textBrowser_29->setText("HP: "+QString::number(Reketon2.getHP())+"\nMobility: 2\nDamage: 80\nAttackRange: 2");
+                }
+                if(attacker == "Duraham1"){
+                    Reketon2.setHP(Reketon2.getHP() - Duraham1.getDamage());
+                    Duraham1.setHP(Duraham1.getHP() - Reketon2.getDamage() / 2);
+                    ui->textBrowser_4->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                    ui->textBrowser_4->setText("HP: "+QString::number(Duraham1.getHP())+"\nMobility: 2\nDamage: 100\nAttackRange: 2");
+                    ui->textBrowser_29->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                    ui->textBrowser_29->setText("HP: "+QString::number(Reketon2.getHP())+"\nMobility: 2\nDamage: 80\nAttackRange: 2");
+                }
+            }
 
-            targetSelection = false ;
+            if(hexa[index].bgPath == ":/src/images/Agent/Angus.png"){
+                if(attacker == "Billy1"){
+                    Angus2.setHP(Angus2.getHP() - Billy1.getDamage());
+                    Billy1.setHP(Billy1.getHP() - Angus2.getDamage() / 2);
+                    ui->textBrowser->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                    ui->textBrowser->setText("HP: "+QString::number(Billy1.getHP())+"\nMobility: 3\nDamage: 90\nAttackRange: 1");
+                    ui->textBrowser_30->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                    ui->textBrowser_30->setText("HP: "+QString::number(Angus2.getHP())+"\nMobility: 2\nDamage: 100\nAttackRange: 1");
+                }
+                if(attacker == "Reketon1"){
+                    Angus2.setHP(Angus2.getHP() - Reketon1.getDamage());
+                    Reketon1.setHP(Reketon1.getHP() - Angus2.getDamage() / 2);
+                    ui->textBrowser_2->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                    ui->textBrowser_2->setText("HP: "+QString::number(Reketon1.getHP())+"\nMobility: 2\nDamage: 80\nAttackRange: 2");
+                    ui->textBrowser_30->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                    ui->textBrowser_30->setText("HP: "+QString::number(Angus2.getHP())+"\nMobility: 2\nDamage: 100\nAttackRange: 1");
+                }
+                if(attacker == "Angus1"){
+                    Angus2.setHP(Angus2.getHP() - Angus1.getDamage());
+                    Angus1.setHP(Angus1.getHP() - Angus2.getDamage() / 2);
+                    ui->textBrowser_3->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                    ui->textBrowser_3->setText("HP: "+QString::number(Angus1.getHP())+"\nMobility: 2\nDamage: 100\nAttackRange: 1");
+                    ui->textBrowser_30->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                    ui->textBrowser_30->setText("HP: "+QString::number(Angus2.getHP())+"\nMobility: 2\nDamage: 100\nAttackRange: 1");
+                }
+                if(attacker == "Duraham1"){
+                    Angus2.setHP(Angus2.getHP() - Duraham1.getDamage());
+                    Duraham1.setHP(Duraham1.getHP() - Angus2.getDamage() / 2);
+                    ui->textBrowser_4->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                    ui->textBrowser_4->setText("HP: "+QString::number(Duraham1.getHP())+"\nMobility: 2\nDamage: 100\nAttackRange: 2");
+                    ui->textBrowser_30->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                    ui->textBrowser_30->setText("HP: "+QString::number(Angus2.getHP())+"\nMobility: 2\nDamage: 100\nAttackRange: 1");
+                }
+            }
 
+            if(hexa[index].bgPath == ":/src/images/Agent/Duraham.png"){
+                if(attacker == "Billy1"){
+                    Duraham2.setHP(Duraham2.getHP() - Billy1.getDamage());
+                    Billy1.setHP(Billy1.getHP() - Duraham2.getDamage() / 2);
+                    ui->textBrowser->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                    ui->textBrowser->setText("HP: "+QString::number(Billy1.getHP())+"\nMobility: 3\nDamage: 90\nAttackRange: 1");
+                    ui->textBrowser_31->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                    ui->textBrowser_31->setText("HP: "+QString::number(Duraham2.getHP())+"\nMobility: 2\nDamage: 100\nAttackRange: 2");
+                }
+                if(attacker == "Reketon1"){
+                    Duraham2.setHP(Duraham2.getHP() - Reketon1.getDamage());
+                    Reketon1.setHP(Reketon1.getHP() - Duraham2.getDamage() / 2);
+                    ui->textBrowser_2->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                    ui->textBrowser_2->setText("HP: "+QString::number(Reketon1.getHP())+"\nMobility: 2\nDamage: 80\nAttackRange: 2");
+                    ui->textBrowser_31->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                    ui->textBrowser_31->setText("HP: "+QString::number(Duraham2.getHP())+"\nMobility: 2\nDamage: 100\nAttackRange: 2");
+                }
+                if(attacker == "Angus1"){
+                    Duraham2.setHP(Duraham2.getHP() - Angus1.getDamage());
+                    Angus1.setHP(Angus1.getHP() - Duraham2.getDamage() / 2);
+                    ui->textBrowser_3->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                    ui->textBrowser_3->setText("HP: "+QString::number(Angus1.getHP())+"\nMobility: 2\nDamage: 100\nAttackRange: 1");
+                    ui->textBrowser_31->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                    ui->textBrowser_31->setText("HP: "+QString::number(Duraham2.getHP())+"\nMobility: 2\nDamage: 100\nAttackRange: 2");
+                }
+                if(attacker == "Duraham1"){
+                    Duraham2.setHP(Duraham2.getHP() - Duraham1.getDamage());
+                    Duraham1.setHP(Duraham1.getHP() - Duraham2.getDamage() / 2);
+                    ui->textBrowser_4->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                    ui->textBrowser_4->setText("HP: "+QString::number(Duraham1.getHP())+"\nMobility: 2\nDamage: 110\nAttackRange: 2");
+                    ui->textBrowser_31->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                    ui->textBrowser_31->setText("HP: "+QString::number(Duraham2.getHP())+"\nMobility: 2\nDamage: 100\nAttackRange: 2");
+                }
+            }
+            targetSelection = false;
             playerRound = 2 ;
         }
 
@@ -313,9 +512,24 @@ void playingGameWindow::hexagonClicked(int index){
                 for(int i = 0; i < 41; i++){
                     if(hexa[i].bgPath == ":/src/images/select_ground.jpg") {
                         hexa[i].bgPath = ":/src/images/ground.jpg";
+                        QPixmap pixmap(hexButton[i]->size());
+                        pixmap.fill(Qt::transparent);
 
-                        updateHexButton(i);
+                        QPainter painter(&pixmap);
+                        painter.setRenderHint(QPainter::Antialiasing);
 
+                        QPolygonF hex = createHexagon(QPointF(pixmap.width() / 2, pixmap.height() / 2), 48);
+                        QPainterPath path;
+                        path.addPolygon(hex);
+                        painter.setClipPath(path);
+
+                        QPixmap bgPixmap(QString::fromStdString(hexa[i].bgPath));
+                        painter.drawPixmap(pixmap.rect(), bgPixmap, bgPixmap.rect());
+
+                        painter.end();
+
+                        hexButton[i]->setIcon(QIcon(pixmap));
+                        hexButton[i]->setIconSize(hexButton[i]->size());
                     }
                 }
                 if(pl2_ag1_clicked){
@@ -333,17 +547,179 @@ void playingGameWindow::hexagonClicked(int index){
                 }
 
 
-                updateHexButton(index);
+                QPixmap pixmap(hexButton[index]->size());
+                pixmap.fill(Qt::transparent);
+
+                QPainter painter(&pixmap);
+                painter.setRenderHint(QPainter::Antialiasing);
+
+                QPolygonF hex = createHexagon(QPointF(pixmap.width() / 2, pixmap.height() / 2), 48);
+                QPainterPath path;
+                path.addPolygon(hex);
+                painter.setClipPath(path);
+
+                QPixmap bgPixmap(QString::fromStdString(hexa[index].bgPath));
+                painter.drawPixmap(pixmap.rect(), bgPixmap, bgPixmap.rect());
+
+                painter.end();
+
+                hexButton[index]->setIcon(QIcon(pixmap));
+                hexButton[index]->setIconSize(hexButton[index]->size());
 
             }  else if(hexa[index].id == "2" && hexa[index].bgPath != ":/src/images/ground.jpg"){
                 ui->messageBox->setText("now select your target");
                 targetSelection = true;
+                if(hexa[index].bgPath == ":/src/images/Agent/Billy.png")
+                    attacker = "Billy2";
+                if(hexa[index].bgPath == ":/src/images/Agent/Reketon.png")
+                    attacker = "Reketon2";
+                if(hexa[index].bgPath == ":/src/images/Agent/Angus.png")
+                    attacker = "Angus2";
+                if(hexa[index].bgPath == ":/src/images/Agent/Duraham.png")
+                    attacker = "Duraham2";
+            } else if(hexa[index].id == "1" && hexa[index].bgPath != ":/src/images/ground.jpg" && targetSelection){
+                if(hexa[index].bgPath == ":/src/images/Agent/Billy.png"){
+                    if(attacker == "Billy2"){
+                        Billy1.setHP(Billy1.getHP() - Billy2.getDamage());
+                        Billy2.setHP(Billy2.getHP() - Billy1.getDamage() / 2);
+                        ui->textBrowser_13->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                        ui->textBrowser_13->setText("HP: "+QString::number(Billy2.getHP())+"\nMobility: 3\nDamage: 90\nAttackRange: 1");
+                        ui->textBrowser->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                        ui->textBrowser->setText("HP: "+QString::number(Billy1.getHP())+"\nMobility: 3\nDamage: 90\nAttackRange: 1");
+                    }
+                    if(attacker == "Reketon2"){
+                        Billy1.setHP(Billy1.getHP() - Reketon2.getDamage());
+                        Reketon2.setHP(Reketon2.getHP() - Billy1.getDamage() / 2);
+                        ui->textBrowser_29->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                        ui->textBrowser_29->setText("HP: "+QString::number(Reketon2.getHP())+"\nMobility: 2\nDamage: 80\nAttackRange: 2");
+                        ui->textBrowser->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                        ui->textBrowser->setText("HP: "+QString::number(Billy1.getHP())+"\nMobility: 3\nDamage: 90\nAttackRange: 1");
 
+                    }
+                    if(attacker == "Angus2"){
+                        Billy1.setHP(Billy1.getHP() - Angus2.getDamage());
+                        Angus2.setHP(Angus2.getHP() - Billy1.getDamage() / 2);
+                        ui->textBrowser_30->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                        ui->textBrowser_30->setText("HP: "+QString::number(Angus2.getHP())+"\nMobility: 2\nDamage: 100\nAttackRange: 1");
+                        ui->textBrowser->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                        ui->textBrowser->setText("HP: "+QString::number(Billy1.getHP())+"\nMobility: 3\nDamage: 90\nAttackRange: 1");
 
+                    }
+                    if(attacker == "Duraham2"){
+                        Billy1.setHP(Billy1.getHP() - Duraham2.getDamage());
+                        Duraham2.setHP(Duraham2.getHP() - Billy1.getDamage() / 2);
+                        ui->textBrowser_31->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                        ui->textBrowser_31->setText("HP: "+QString::number(Duraham2.getHP())+"\nMobility: 2\nDamage: 100\nAttackRange: 1");
+                        ui->textBrowser->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                        ui->textBrowser->setText("HP: "+QString::number(Billy1.getHP())+"\nMobility: 3\nDamage: 90\nAttackRange: 1");
+                    }
+                }
 
+                if(hexa[index].bgPath == ":/src/images/Agent/Reketon.png"){
+                    if(attacker == "Billy2"){
+                        Reketon1.setHP(Reketon1.getHP() - Billy2.getDamage());
+                        Billy2.setHP(Billy2.getHP() - Reketon1.getDamage() / 2);
+                        ui->textBrowser_13->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                        ui->textBrowser_13->setText("HP: "+QString::number(Billy2.getHP())+"\nMobility: 3\nDamage: 90\nAttackRange: 1");
+                        ui->textBrowser_2->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                        ui->textBrowser_2->setText("HP: "+QString::number(Reketon1.getHP())+"\nMobility: 2\nDamage: 80\nAttackRange: 2");
+                    }
+                    if(attacker == "Reketon2"){
+                        Reketon1.setHP(Reketon1.getHP() - Reketon2.getDamage());
+                        Reketon2.setHP(Reketon2.getHP() - Reketon1.getDamage() / 2);
+                        ui->textBrowser_29->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                        ui->textBrowser_29->setText("HP: "+QString::number(Reketon2.getHP())+"\nMobility: 2\nDamage: 80\nAttackRange: 2");
+                        ui->textBrowser_2->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                        ui->textBrowser_2->setText("HP: "+QString::number(Reketon1.getHP())+"\nMobility: 2\nDamage: 80\nAttackRange: 2");
+                    }
+                    if(attacker == "Angus2"){
+                        Reketon1.setHP(Reketon1.getHP() - Angus2.getDamage());
+                        Angus2.setHP(Angus2.getHP() - Reketon1.getDamage() / 2);
+                        ui->textBrowser_30->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                        ui->textBrowser_30->setText("HP: "+QString::number(Angus2.getHP())+"\nMobility: 2\nDamage: 100\nAttackRange: 1");
+                        ui->textBrowser_2->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                        ui->textBrowser_2->setText("HP: "+QString::number(Reketon1.getHP())+"\nMobility: 2\nDamage: 80\nAttackRange: 2");
+                    }
+                    if(attacker == "Duraham2"){
+                        Reketon1.setHP(Reketon1.getHP() - Duraham2.getDamage());
+                        Duraham2.setHP(Duraham2.getHP() - Reketon1.getDamage() / 2);
+                        ui->textBrowser_31->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                        ui->textBrowser_31->setText("HP: "+QString::number(Duraham2.getHP())+"\nMobility: 2\nDamage: 100\nAttackRange: 2");
+                        ui->textBrowser_2->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                        ui->textBrowser_2->setText("HP: "+QString::number(Reketon1.getHP())+"\nMobility: 2\nDamage: 80\nAttackRange: 2");
+                    }
+                }
 
+                if(hexa[index].bgPath == ":/src/images/Agent/Angus.png"){
+                    if(attacker == "Billy2"){
+                        Angus1.setHP(Angus1.getHP() - Billy2.getDamage());
+                        Billy2.setHP(Billy2.getHP() - Angus1.getDamage() / 2);
+                        ui->textBrowser_13->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                        ui->textBrowser_13->setText("HP: "+QString::number(Billy2.getHP())+"\nMobility: 3\nDamage: 90\nAttackRange: 1");
+                        ui->textBrowser_3->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                        ui->textBrowser_3->setText("HP: "+QString::number(Angus1.getHP())+"\nMobility: 2\nDamage: 100\nAttackRange: 1");
+                    }
+                    if(attacker == "Reketon2"){
+                        Angus1.setHP(Angus1.getHP() - Reketon2.getDamage());
+                        Reketon2.setHP(Reketon2.getHP() - Angus1.getDamage() / 2);
+                        ui->textBrowser_29->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                        ui->textBrowser_29->setText("HP: "+QString::number(Reketon2.getHP())+"\nMobility: 2\nDamage: 80\nAttackRange: 2");
+                        ui->textBrowser_3->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                        ui->textBrowser_3->setText("HP: "+QString::number(Angus1.getHP())+"\nMobility: 2\nDamage: 100\nAttackRange: 1");
+                    }
+                    if(attacker == "Angus2"){
+                        Angus1.setHP(Angus1.getHP() - Angus2.getDamage());
+                        Angus2.setHP(Angus2.getHP() - Angus1.getDamage() / 2);
+                        ui->textBrowser_30->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                        ui->textBrowser_30->setText("HP: "+QString::number(Angus2.getHP())+"\nMobility: 2\nDamage: 100\nAttackRange: 1");
+                        ui->textBrowser_3->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                        ui->textBrowser_3->setText("HP: "+QString::number(Angus1.getHP())+"\nMobility: 2\nDamage: 100\nAttackRange: 1");
+                    }
+                    if(attacker == "Duraham2"){
+                        Angus1.setHP(Angus1.getHP() - Duraham2.getDamage());
+                        Duraham2.setHP(Duraham2.getHP() - Angus1.getDamage() / 2);
+                        ui->textBrowser_31->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                        ui->textBrowser_31->setText("HP: "+QString::number(Duraham2.getHP())+"\nMobility: 2\nDamage: 100\nAttackRange: 2");
+                        ui->textBrowser_3->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                        ui->textBrowser_3->setText("HP: "+QString::number(Angus1.getHP())+"\nMobility: 2\nDamage: 100\nAttackRange: 1");
+                    }
+                }
 
-
+                if(hexa[index].bgPath == ":/src/images/Agent/Duraham.png"){
+                    if(attacker == "Billy2"){
+                        Duraham1.setHP(Duraham1.getHP() - Billy2.getDamage());
+                        Billy2.setHP(Billy2.getHP() - Duraham1.getDamage() / 2);
+                        ui->textBrowser_13->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                        ui->textBrowser_13->setText("HP: "+QString::number(Billy2.getHP())+"\nMobility: 3\nDamage: 90\nAttackRange: 1");
+                        ui->textBrowser_4->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                        ui->textBrowser_4->setText("HP: "+QString::number(Duraham1.getHP())+"\nMobility: 2\nDamage: 100\nAttackRange: 2");
+                    }
+                    if(attacker == "Reketon2"){
+                        Duraham1.setHP(Duraham1.getHP() - Reketon2.getDamage());
+                        Reketon2.setHP(Reketon2.getHP() - Duraham1.getDamage() / 2);
+                        ui->textBrowser_29->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                        ui->textBrowser_29->setText("HP: "+QString::number(Reketon2.getHP())+"\nMobility: 2\nDamage: 80\nAttackRange: 2");
+                        ui->textBrowser_4->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                        ui->textBrowser_4->setText("HP: "+QString::number(Duraham1.getHP())+"\nMobility: 2\nDamage: 100\nAttackRange: 2");
+                    }
+                    if(attacker == "Angus2"){
+                        Duraham1.setHP(Duraham1.getHP() - Angus2.getDamage());
+                        Angus2.setHP(Angus2.getHP() - Duraham1.getDamage() / 2);
+                        ui->textBrowser_30->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                        ui->textBrowser_30->setText("HP: "+QString::number(Angus2.getHP())+"\nMobility: 2\nDamage: 100\nAttackRange: 1");
+                        ui->textBrowser_4->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                        ui->textBrowser_4->setText("HP: "+QString::number(Duraham1.getHP())+"\nMobility: 2\nDamage: 100\nAttackRange: 2");
+                    }
+                    if(attacker == "Duraham2"){
+                        Duraham1.setHP(Duraham1.getHP() - Duraham2.getDamage());
+                        Duraham2.setHP(Duraham2.getHP() - Duraham1.getDamage() / 2);
+                        ui->textBrowser_31->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                        ui->textBrowser_31->setText("HP: "+QString::number(Duraham2.getHP())+"\nMobility: 2\nDamage: 110\nAttackRange: 2");
+                        ui->textBrowser_4->setStyleSheet("font-size:6pt;""color:white;""font-weight:bold;");
+                        ui->textBrowser_4->setText("HP: "+QString::number(Duraham1.getHP())+"\nMobility: 2\nDamage: 100\nAttackRange: 2");
+                    }
+                }
+                targetSelection = false;
                 playerRound = 1 ;
             }
 
@@ -358,162 +734,15 @@ void playingGameWindow::hexagonClicked(int index){
 }
 
 
-void playingGameWindow::bfsSet(int startIndex, int targetIndex, int hexCount) {
-    int maxLevel;
-    if (startIndex < 0 || startIndex >= hexCount) return;
-    if (targetIndex < 0 || targetIndex >= hexCount) return;
-    if (startIndex == targetIndex) return;
-
-    if(playerRound == 1){
-        if(hexa[startIndex].bgPath == ":/src/images/Agent/Angus.png"){
-            maxLevel = Angus1.getMobility();
-            bool waterWalking = Angus1.getWaterWalking();
-            bool standOnWater = Angus1.getStandOnWater();
 
 
-        }
-    }
+playingGameWindow::~playingGameWindow()
+{
 
-
-
-    if(hexa[startIndex].bgPath == ":/src/images/Agent/Billy.png") maxLevel = 3 ;
-    if(hexa[startIndex].bgPath == ":/src/images/Agent/Reketon.png") maxLevel = 2 ;
-    if(hexa[startIndex].bgPath == ":/src/images/Agent/Duraham.png") maxLevel = 2 ;
-
-
-    std::vector<bool> visited(hexCount, false);
-    std::queue<int> q;
-    std::queue<int> levelQueue;
-
-    q.push(startIndex);
-    levelQueue.push(0);
-    visited[startIndex] = true;
-
-    while (!q.empty()) {
-        int current = q.front(); q.pop();
-        int level = levelQueue.front(); levelQueue.pop();
-
-        if (level > maxLevel) continue;
-
-        // رسیدن به target
-        if (current == targetIndex) {
-            hexa[current].bgPath = hexa[startIndex].bgPath;
-            hexa[startIndex].bgPath = ":/src/images/ground.jpg";
-            updateHexButton(current);
-            updateHexButton(startIndex);
-
-            qDebug() << "✅ Target hex" << current << "set to money";
-            return;
-        }
-
-        // همسایه‌ها
-        hexagon* neighbors[6] = {
-            hexa[current].top,
-            hexa[current].bottom,
-            hexa[current].topLeft,
-            hexa[current].topRight,
-            hexa[current].bottomLeft,
-            hexa[current].bottomRight
-        };
-
-        for (int k = 0; k < 6; k++) {
-            if (neighbors[k] != nullptr) {
-                int nIndex = neighbors[k] - &hexa[0];
-
-                if (nIndex >= 0 && nIndex < hexCount && !visited[nIndex]) {
-                    // 🔹 استارت و تارگت استثناء
-                    if (nIndex == startIndex || nIndex == targetIndex) {
-                        visited[nIndex] = true;
-                        q.push(nIndex);
-                        levelQueue.push(level + 1);
-                    }
-                    // 🔹 بقیه باید ground باشن
-                    else if (hexa[nIndex].bgPath == ":/src/images/ground.jpg") {
-                        visited[nIndex] = true;
-                        q.push(nIndex);
-                        levelQueue.push(level + 1);
-                    }
-                }
-            }
-        }
-
-    }
-
-    qDebug() << "❌ Target not reachable";
+    delete ui;
 }
 
 
-
-void playingGameWindow::findNeighbors() {
-    int N = 41; // یا hexCount اگر داری
-    for (int i = 0; i < N; i++) {
-        if (hexa[i].row == -1) continue;
-
-        int r = hexa[i].row;
-        int c = hexa[i].col;
-
-        hexa[i].top = hexa[i].bottom =
-            hexa[i].topLeft = hexa[i].topRight =
-            hexa[i].bottomLeft = hexa[i].bottomRight = nullptr;
-
-        for (int j = 0; j < N; j++) {
-            if (i == j) continue;
-
-            int nr = hexa[j].row;
-            int nc = hexa[j].col;
-
-            // هر کدوم مستقل بررسی بشه (if جدا، نه else-if)
-
-            // Top
-            if (nr == r - 2 && nc == c)
-                hexa[i].top = &hexa[j];
-
-            // Bottom
-            if (nr == r + 2 && nc == c)
-                hexa[i].bottom = &hexa[j];
-
-            // Top-Left
-            if (nr == r - 1 &&
-                ((r % 2 == 0 && nc == c - 1) || (r % 2 != 0 && nc == c)))
-                hexa[i].topLeft = &hexa[j];
-
-            // Top-Right
-            if (nr == r - 1 &&
-                ((r % 2 == 0 && nc == c) || (r % 2 != 0 && nc == c + 1)))
-                hexa[i].topRight = &hexa[j];
-
-            // Bottom-Left
-            if (nr == r + 1 &&
-                ((r % 2 == 0 && nc == c - 1) || (r % 2 != 0 && nc == c)))
-                hexa[i].bottomLeft = &hexa[j];
-
-            // Bottom-Right
-            if (nr == r + 1 &&
-                ((r % 2 == 0 && nc == c) || (r % 2 != 0 && nc == c + 1)))
-                hexa[i].bottomRight = &hexa[j];
-        }
-    }
-}
-
-void playingGameWindow::updateHexButton(int index) {
-    QPixmap pixmap(hexButton[index]->size());
-    pixmap.fill(Qt::transparent);
-
-    QPainter painter(&pixmap);
-    painter.setRenderHint(QPainter::Antialiasing);
-
-    QPolygonF hex = createHexagon(QPointF(pixmap.width()/2, pixmap.height()/2), 48);
-    QPainterPath path;
-    path.addPolygon(hex);
-    painter.setClipPath(path);
-
-    QPixmap bgPixmap(QString::fromStdString(hexa[index].bgPath));
-    painter.drawPixmap(pixmap.rect(), bgPixmap, bgPixmap.rect());
-    painter.end();
-
-    hexButton[index]->setIcon(QIcon(pixmap));
-    hexButton[index]->setIconSize(hexButton[index]->size());
-}
 
 
 void playingGameWindow::on_pl1_ag1_btn_clicked()
@@ -849,11 +1078,5 @@ void playingGameWindow::on_pl2_ag4_btn_clicked()
         else
             ui->messageBox->setText("It's Not Your Turn");
     }
-}
-
-playingGameWindow::~playingGameWindow()
-{
-
-    delete ui;
 }
 
