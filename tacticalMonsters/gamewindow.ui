@@ -133,6 +133,9 @@ color:#ffffff;
 border-radius:22px;
 }</string>
     </property>
+    <property name="plainText">
+     <string>player2</string>
+    </property>
    </widget>
    <widget class="QPlainTextEdit" name="player1Name">
     <property name="geometry">
@@ -150,6 +153,9 @@ font: 28pt &quot;Niagara Engraved&quot;;
 color:#ffffff;
 border-radius:22px;
 }</string>
+    </property>
+    <property name="plainText">
+     <string>player1</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_3">
