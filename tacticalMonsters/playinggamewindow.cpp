@@ -54,8 +54,8 @@ WaterWalking Duraham2(320, 2, 100, 2);
 struct hexagon {
     int centerX;
     int centerY;
-    int row;
-    int col;
+    int row = 0;
+    int col = 0;
     string id;
     string color;
     string bgPath;
@@ -146,8 +146,6 @@ void playingGameWindow::openFile()
                     offset = 1.5;
                 hexa[hexCount].centerX = ((col * 3) - offset) * hexSize + (width / 3.2);
                 hexa[hexCount].centerY = row * (hexHeight / 2) + height / 6;
-                hexa[hexCount].row = row;
-                hexa[hexCount].col = col;
                 if(line[position + 1] == " "){
                     id = ".";
                     hexa[hexCount].bgPath = ":/src/images/ground.jpg";
@@ -179,27 +177,23 @@ void playingGameWindow::openFile()
                     col += 1;
                 }
                 hexa[hexCount].id = id;
-                qDebug()<< row << col << hexCount;
                 createHexButton(hexCount);
+                qDebug()<< row << col << hexCount;
+                hexa[hexCount].row = row;
+                hexa[hexCount].col = col;
                 hexCount ++;
-
             }
             position++;
         }
         row++;
-        col = 0 ;
+        col = 0;
         if(row == 10)
             break;
     }
 
     mapFile.close();
     connectNeighbors(hexCount);
-    if(hexa[12].top !=nullptr)
-        qDebug()<<QString::fromStdString( hexa[12].top->id);
-    else
-        qDebug()<< "null";
 }
-
 void playingGameWindow::connectNeighbors(int hexCount) {
     for (int i = 0; i < hexCount; i++) {
         int r = hexa[i].row;
@@ -212,22 +206,22 @@ void playingGameWindow::connectNeighbors(int hexCount) {
             int jc = hexa[j].col;
 
             // بالا و پایین
-            if (jr == r - 1 && jc == c)
+            if (jr == r - 2 && jc == c)
                 hexa[i].top = &hexa[j];
-            else if (jr == r + 1 && jc == c)
+            else if (jr == r + 2 && jc == c)
                 hexa[i].bottom = &hexa[j];
 
             // گوشه‌ها بسته به زوج/فرد بودن ردیف
             if (r % 2 == 0) {
-                if (jr == r - 1 && jc == c - 1) hexa[i].topLeft = &hexa[j];
-                if (jr == r - 1 && jc == c)     hexa[i].topRight = &hexa[j];
-                if (jr == r + 1 && jc == c - 1) hexa[i].bottomLeft = &hexa[j];
-                if (jr == r + 1 && jc == c)     hexa[i].bottomRight = &hexa[j];
+                if (jr == r - 1 && jc == c) hexa[i].topLeft = &hexa[j];
+                if (jr == r - 1 && jc == c + 1)     hexa[i].topRight = &hexa[j];
+                if (jr == r + 1 && jc == c) hexa[i].bottomLeft = &hexa[j];
+                if (jr == r + 1 && jc == c + 1)     hexa[i].bottomRight = &hexa[j];
             } else {
-                if (jr == r - 1 && jc == c)     hexa[i].topLeft = &hexa[j];
-                if (jr == r - 1 && jc == c + 1) hexa[i].topRight = &hexa[j];
-                if (jr == r + 1 && jc == c)     hexa[i].bottomLeft = &hexa[j];
-                if (jr == r + 1 && jc == c + 1) hexa[i].bottomRight = &hexa[j];
+                if (jr == r - 1 && jc == c - 1)     hexa[i].topLeft = &hexa[j];
+                if (jr == r - 1 && jc == c) hexa[i].topRight = &hexa[j];
+                if (jr == r + 1 && jc == c - 1)     hexa[i].bottomLeft = &hexa[j];
+                if (jr == r + 1 && jc == c) hexa[i].bottomRight = &hexa[j];
             }
         }
     }
