@@ -281,39 +281,31 @@ void playingGameWindow::openFile()
                 if(line[position + 1] == " "){
                     id = ".";
                     hexa[hexCount].bgPath = ":/src/images/ground.jpg";
-                    position = position + 3;
-                    col += 1;
                 }
                 else if(line[position + 1] == "1"){
                     id = "1";
                     hexa[hexCount].bgPath = ":/src/images/ground.jpg";
-                    position = position + 3;
-                    col += 1;
                 }
                 else if(line[position + 1] == "2"){
                     id = "2";
                     hexa[hexCount].bgPath = ":/src/images/ground.jpg";
-                    position = position + 3;
-                    col += 1;
                 }
                 else if(line[position + 1] == "~"){
                     id = "~";
                     hexa[hexCount].bgPath = ":/src/images/water.jpg";
-                    position = position + 3;
-                    col += 1;
                 }
                 else if(line[position + 1] == "#"){
                     id = "#";
                     hexa[hexCount].bgPath = ":/src/images/stone.jpg";
-                    position = position + 3;
-                    col += 1;
                 }
+
                 hexa[hexCount].id = id;
                 createHexButton(hexCount);
-                qDebug()<< row << col << hexCount;
                 hexa[hexCount].row = row;
                 hexa[hexCount].col = col;
                 hexCount ++;
+                col++;
+                position +=3 ;
             }
             position++;
         }
@@ -379,13 +371,15 @@ void playingGameWindow::createHexButton(int index){
 }
 // متد کلیک روی شش ضلعی
 void playingGameWindow::hexagonClicked(int index){
+
+
     if(playerRound == 1){
         if(hexa[index].id == "1" && (pl1_ag1_clicked || pl1_ag2_clicked || pl1_ag3_clicked || pl1_ag4_clicked
-                                    || pl1_ag5_clicked || pl1_ag6_clicked || pl1_ag7_clicked || pl1_ag8_clicked
-                                    || pl1_ag9_clicked || pl1_ag10_clicked || pl1_ag11_clicked || pl1_ag12_clicked
-                                    || pl1_ag13_clicked || pl1_ag14_clicked || pl1_ag15_clicked || pl1_ag16_clicked
-                                    || pl1_ag17_clicked || pl1_ag18_clicked || pl1_ag19_clicked || pl1_ag20_clicked
-                                    || pl1_ag21_clicked || pl1_ag22_clicked || pl1_ag23_clicked || pl1_ag24_clicked)){
+                                      || pl1_ag5_clicked || pl1_ag6_clicked || pl1_ag7_clicked || pl1_ag8_clicked
+                                      || pl1_ag9_clicked || pl1_ag10_clicked || pl1_ag11_clicked || pl1_ag12_clicked
+                                      || pl1_ag13_clicked || pl1_ag14_clicked || pl1_ag15_clicked || pl1_ag16_clicked
+                                      || pl1_ag17_clicked || pl1_ag18_clicked || pl1_ag19_clicked || pl1_ag20_clicked
+                                      || pl1_ag21_clicked || pl1_ag22_clicked || pl1_ag23_clicked || pl1_ag24_clicked)){
             ui->messageBox->setText(QString("You cliked on hex %1 with id %2")
                                         .arg(index)
                                         .arg(QString::fromStdString(hexa[index].id)));
@@ -405,13 +399,72 @@ void playingGameWindow::hexagonClicked(int index){
                 hexa[index].bgPath = ":/src/images/Agent/Reketon.png";
                 pl1_ag2_clicked = false;
             } else if(pl1_ag3_clicked){
-            hexa[index].bgPath = ":/src/images/Agent/Angus.png";
+                hexa[index].bgPath = ":/src/images/Agent/Angus.png";
                 pl1_ag3_clicked = false;
             } else if(pl1_ag4_clicked){
-            hexa[index].bgPath = ":/src/images/Agent/Duraham.png";
+                hexa[index].bgPath = ":/src/images/Agent/Duraham.png";
                 pl1_ag4_clicked = false;
+            } else if(pl1_ag5_clicked){
+                hexa[index].bgPath = ":/src/images/Agent/Colonel Baba.png";
+                pl1_ag5_clicked = false;
+            } else if(pl1_ag6_clicked){
+                hexa[index].bgPath = ":/src/images/Agent/Medusa.png";
+                pl1_ag6_clicked = false;
+            } else if(pl1_ag7_clicked){
+                hexa[index].bgPath = ":/src/images/Agent/Bunka.png";
+                pl1_ag7_clicked = false;
+            } else if(pl1_ag8_clicked){
+                hexa[index].bgPath = ":/src/images/Agent/Sanka.png";
+                pl1_ag8_clicked = false;
+            } else if(pl1_ag9_clicked){
+                hexa[index].bgPath = ":/src/images/Agent/Sir Lamorak.png";
+                pl1_ag9_clicked = false;
+            } else if(pl1_ag10_clicked){
+                hexa[index].bgPath = ":/src/images/Agent/Kabu.png";
+                pl1_ag10_clicked = false;
+            } else if(pl1_ag11_clicked){
+                hexa[index].bgPath = ":/src/images/Agent/Rajakal.png";
+                pl1_ag11_clicked = false;
+            } else if(pl1_ag12_clicked){
+                hexa[index].bgPath = ":/src/images/Agent/Salih.png";
+                pl1_ag12_clicked = false;
+            } else if(pl1_ag13_clicked){
+                hexa[index].bgPath = ":/src/images/Agent/Khan.png";
+                pl1_ag13_clicked = false;
+            } else if(pl1_ag14_clicked){
+                hexa[index].bgPath = ":/src/images/Agent/Boi.png";
+                pl1_ag14_clicked = false;
+            } else if(pl1_ag15_clicked){
+                hexa[index].bgPath = ":/src/images/Agent/Eloi.png";
+                pl1_ag15_clicked = false;
+            } else if(pl1_ag16_clicked){
+                hexa[index].bgPath = ":/src/images/Agent/Kanar.png";
+                pl1_ag16_clicked = false;
+            } else if(pl1_ag17_clicked){
+                hexa[index].bgPath = ":/src/images/Agent/Elsa.png";
+                pl1_ag17_clicked = false;
+            } else if(pl1_ag18_clicked){
+                hexa[index].bgPath = ":/src/images/Agent/Karissa.png";
+                pl1_ag18_clicked = false;
+            } else if(pl1_ag19_clicked){
+                hexa[index].bgPath = ":/src/images/Agent/Sir Philip.png";
+                pl1_ag19_clicked = false;
+            } else if(pl1_ag20_clicked){
+                hexa[index].bgPath = ":/src/images/Agent/Frost.png";
+                pl1_ag20_clicked = false;
+            } else if(pl1_ag21_clicked){
+                hexa[index].bgPath = ":/src/images/Agent/Tusk.png";
+                pl1_ag21_clicked = false;
+            } else if(pl1_ag22_clicked){
+                hexa[index].bgPath = ":/src/images/Agent/Rambu.png";
+                pl1_ag22_clicked = false;
+            } else if(pl1_ag23_clicked){
+                hexa[index].bgPath = ":/src/images/Agent/Sabrina.png";
+                pl1_ag23_clicked = false;
+            } else if(pl1_ag24_clicked){
+                hexa[index].bgPath = ":/src/images/Agent/Death.png";
+                pl1_ag24_clicked = false;
             }
-
 
             updateHexButton(index);
 
@@ -422,64 +475,138 @@ void playingGameWindow::hexagonClicked(int index){
             startHex = index ;
             startSelection = false ;
 
-        } else if(startSelection == false && targetSelection == true){
 
 
+        } else if(startSelection == false && targetSelection == true && hexa[index].bgPath == ":/src/images/ground.jpg"){
+
+            qDebug() << "target selection method " << hexa[index].bgPath ;
             targetIndex = index ;
             bfsSet(startHex, targetIndex , 41);
-
             targetSelection = false ;
-
+            startSelection = true ;
             playerRound = 2 ;
+            ui->messageBox->setText("Round 2");
+
         }
 
     } else if(playerRound == 2){
-            if(hexa[index].id == "2" && (pl2_ag1_clicked || pl2_ag2_clicked || pl2_ag3_clicked || pl2_ag4_clicked
+        if(hexa[index].id == "2" && (pl2_ag1_clicked || pl2_ag2_clicked || pl2_ag3_clicked || pl2_ag4_clicked
                                       || pl2_ag5_clicked || pl2_ag6_clicked || pl2_ag7_clicked || pl2_ag8_clicked
                                       || pl2_ag9_clicked || pl2_ag10_clicked || pl2_ag11_clicked || pl2_ag12_clicked
                                       || pl2_ag13_clicked || pl2_ag14_clicked || pl2_ag15_clicked || pl2_ag16_clicked
                                       || pl2_ag17_clicked || pl2_ag18_clicked || pl2_ag19_clicked || pl2_ag20_clicked
                                       || pl2_ag21_clicked || pl2_ag22_clicked || pl2_ag23_clicked || pl2_ag24_clicked)){
-                ui->messageBox->setText(QString("You cliked on hex %1 with id %2")
-                                            .arg(index)
-                                            .arg(QString::fromStdString(hexa[index].id)));
+            ui->messageBox->setText(QString("You cliked on hex %1 with id %2")
+                                        .arg(index)
+                                        .arg(QString::fromStdString(hexa[index].id)));
 
-                for(int i = 0; i < 41; i++){
-                    if(hexa[i].bgPath == ":/src/images/select_ground.jpg") {
-                        hexa[i].bgPath = ":/src/images/ground.jpg";
+            for(int i = 0; i < 41; i++){
+                if(hexa[i].bgPath == ":/src/images/select_ground.jpg") {
+                    hexa[i].bgPath = ":/src/images/ground.jpg";
 
-                        updateHexButton(i);
+                    updateHexButton(i);
 
-                    }
                 }
-                if(pl2_ag1_clicked){
-                    hexa[index].bgPath = ":/src/images/Agent/Billy.png";
-                    pl2_ag1_clicked = false;
-                } else if(pl2_ag2_clicked){
-                    hexa[index].bgPath = ":/src/images/Agent/Reketon.png";
-                    pl2_ag2_clicked = false;
-                } else if(pl2_ag3_clicked){
-                    hexa[index].bgPath = ":/src/images/Agent/Angus.png";
-                    pl2_ag3_clicked = false;
-                } else if(pl2_ag4_clicked){
-                    hexa[index].bgPath = ":/src/images/Agent/Duraham.png";
-                    pl2_ag4_clicked = false;
-                }
-
-
-                updateHexButton(index);
-
-            }  else if(hexa[index].id == "2" && hexa[index].bgPath != ":/src/images/ground.jpg"){
-                ui->messageBox->setText("now select your target");
-                targetSelection = true;
-
-
-
-
-
-
-                playerRound = 1 ;
             }
+            if(pl2_ag1_clicked){
+                hexa[index].bgPath = ":/src/images/Agent/Billy.png";
+                pl2_ag1_clicked = false;
+            } else if(pl2_ag2_clicked){
+                hexa[index].bgPath = ":/src/images/Agent/Reketon.png";
+                pl2_ag2_clicked = false;
+            } else if(pl2_ag3_clicked){
+                hexa[index].bgPath = ":/src/images/Agent/Angus.png";
+                pl2_ag3_clicked = false;
+            } else if(pl2_ag4_clicked){
+                hexa[index].bgPath = ":/src/images/Agent/Duraham.png";
+                pl2_ag4_clicked = false;
+            } else if(pl2_ag5_clicked){
+                hexa[index].bgPath = ":/src/images/Agent/Colonel Baba.png";
+                pl2_ag5_clicked = false;
+            } else if(pl2_ag6_clicked){
+                hexa[index].bgPath = ":/src/images/Agent/Medusa.png";
+                pl2_ag6_clicked = false;
+            } else if(pl2_ag7_clicked){
+                hexa[index].bgPath = ":/src/images/Agent/Bunka.png";
+                pl2_ag7_clicked = false;
+            } else if(pl2_ag8_clicked){
+                hexa[index].bgPath = ":/src/images/Agent/Sanka.png";
+                pl2_ag8_clicked = false;
+            } else if(pl2_ag9_clicked){
+                hexa[index].bgPath = ":/src/images/Agent/Sir Lamorak.png";
+                pl2_ag9_clicked = false;
+            } else if(pl2_ag10_clicked){
+                hexa[index].bgPath = ":/src/images/Agent/Kabu.png";
+                pl2_ag10_clicked = false;
+            } else if(pl2_ag11_clicked){
+                hexa[index].bgPath = ":/src/images/Agent/Rajakal.png";
+                pl2_ag11_clicked = false;
+            } else if(pl2_ag12_clicked){
+                hexa[index].bgPath = ":/src/images/Agent/Salih.png";
+                pl2_ag12_clicked = false;
+            } else if(pl2_ag13_clicked){
+                hexa[index].bgPath = ":/src/images/Agent/Khan.png";
+                pl2_ag13_clicked = false;
+            } else if(pl2_ag14_clicked){
+                hexa[index].bgPath = ":/src/images/Agent/Boi.png";
+                pl2_ag14_clicked = false;
+            } else if(pl2_ag15_clicked){
+                hexa[index].bgPath = ":/src/images/Agent/Eloi.png";
+                pl2_ag15_clicked = false;
+            } else if(pl2_ag16_clicked){
+                hexa[index].bgPath = ":/src/images/Agent/Kanar.png";
+                pl2_ag16_clicked = false;
+            } else if(pl2_ag17_clicked){
+                hexa[index].bgPath = ":/src/images/Agent/Elsa.png";
+                pl2_ag17_clicked = false;
+            } else if(pl2_ag18_clicked){
+                hexa[index].bgPath = ":/src/images/Agent/Karissa.png";
+                pl2_ag18_clicked = false;
+            } else if(pl2_ag19_clicked){
+                hexa[index].bgPath = ":/src/images/Agent/Sir Philip.png";
+                pl2_ag19_clicked = false;
+            } else if(pl2_ag20_clicked){
+                hexa[index].bgPath = ":/src/images/Agent/Frost.png";
+                pl2_ag20_clicked = false;
+            } else if(pl2_ag21_clicked){
+                hexa[index].bgPath = ":/src/images/Agent/Tusk.png";
+                pl2_ag21_clicked = false;
+            } else if(pl2_ag22_clicked){
+                hexa[index].bgPath = ":/src/images/Agent/Rambu.png";
+                pl2_ag22_clicked = false;
+            } else if(pl2_ag23_clicked){
+                hexa[index].bgPath = ":/src/images/Agent/Sabrina.png";
+                pl2_ag23_clicked = false;
+            } else if(pl2_ag24_clicked){
+                hexa[index].bgPath = ":/src/images/Agent/Death.png";
+                pl2_ag24_clicked = false;
+            }
+
+
+            updateHexButton(index);
+
+        }  else if(hexa[index].id == "2" && hexa[index].bgPath != ":/src/images/ground.jpg" && startSelection ){
+            ui->messageBox->setText("now select your target");
+            targetSelection = true;
+
+            startHex = index ;
+            startSelection = false ;
+
+
+
+        } else if(startSelection == false && targetSelection == true){
+
+
+            targetIndex = index ;
+
+            bfsSet(startHex, targetIndex , 41);
+
+            targetSelection = false ;
+            startSelection = true ;
+            playerRound = 1 ;
+
+            ui->messageBox->setText("Round 1");
+        }
 
     }
     roundCounter++;
@@ -498,6 +625,7 @@ void playingGameWindow::bfsSet(int startIndex, int targetIndex, int hexCount) {
     if (targetIndex < 0 || targetIndex >= hexCount) return;
     if (startIndex == targetIndex) return;
 
+    findNeighbors();
 
 
     if(hexa[startIndex].bgPath == ":/src/images/Agent/Billy.png"){
@@ -671,12 +799,10 @@ void playingGameWindow::bfsSet(int startIndex, int targetIndex, int hexCount) {
     }
 
 
-
-
-    if(hexa[startIndex].bgPath == ":/src/images/Agent/Billy.png") maxLevel = 3 ;
-    if(hexa[startIndex].bgPath == ":/src/images/Agent/Reketon.png") maxLevel = 2 ;
-    if(hexa[startIndex].bgPath == ":/src/images/Agent/Duraham.png") maxLevel = 2 ;
-
+    qDebug() << "maxlevel = " << maxLevel << "  start bg = " << hexa[startIndex].bgPath
+             << "  target bg = " << hexa[startIndex].bgPath
+             << " start id = " << hexa[startIndex].id
+             << " target id = " << hexa[targetSelection].id ;
 
     std::vector<bool> visited(hexCount, false);
     std::queue<int> q;
@@ -689,21 +815,22 @@ void playingGameWindow::bfsSet(int startIndex, int targetIndex, int hexCount) {
     while (!q.empty()) {
         int current = q.front(); q.pop();
         int level = levelQueue.front(); levelQueue.pop();
-
+        qDebug() << "level " << level << "  maxlevel : " << maxLevel ;
         if (level > maxLevel) continue;
 
-        // رسیدن به target
         if (current == targetIndex) {
-            hexa[current].bgPath = hexa[startIndex].bgPath;
-            hexa[startIndex].bgPath = ":/src/images/ground.jpg";
-            updateHexButton(current);
-            updateHexButton(startIndex);
+            hexa[targetIndex].bgPath = hexa[startIndex].bgPath;
+            if (playerRound == 1) hexa[targetIndex].id = "1";
+            if (playerRound == 2) hexa[targetIndex].id = "2";
+            createHexButton(targetIndex);
 
-            qDebug() << "✅ Target hex" << current << "set to money";
+            hexa[startIndex].bgPath = ":/src/images/ground.jpg";
+            hexa[startIndex].id = ".";
+            createHexButton(startIndex);
+
             return;
         }
 
-        // همسایه‌ها
         hexagon* neighbors[6] = {
             hexa[current].top,
             hexa[current].bottom,
@@ -718,14 +845,8 @@ void playingGameWindow::bfsSet(int startIndex, int targetIndex, int hexCount) {
                 int nIndex = neighbors[k] - &hexa[0];
 
                 if (nIndex >= 0 && nIndex < hexCount && !visited[nIndex]) {
-                    // 🔹 استارت و تارگت استثناء
-                    if (nIndex == startIndex || nIndex == targetIndex) {
-                        visited[nIndex] = true;
-                        q.push(nIndex);
-                        levelQueue.push(level + 1);
-                    }
-                    // 🔹 بقیه باید ground باشن
-                    else if (hexa[nIndex].bgPath == ":/src/images/ground.jpg") {
+                    // فقط ground یا target
+                    if (hexa[nIndex].bgPath == ":/src/images/ground.jpg" || nIndex == targetIndex) {
                         visited[nIndex] = true;
                         q.push(nIndex);
                         levelQueue.push(level + 1);
@@ -733,7 +854,6 @@ void playingGameWindow::bfsSet(int startIndex, int targetIndex, int hexCount) {
                 }
             }
         }
-
     }
 
     qDebug() << "❌ Target not reachable";
@@ -742,7 +862,7 @@ void playingGameWindow::bfsSet(int startIndex, int targetIndex, int hexCount) {
 
 
 void playingGameWindow::findNeighbors() {
-    int N = 41; // یا hexCount اگر داری
+    int N = 41;
     for (int i = 0; i < N; i++) {
         if (hexa[i].row == -1) continue;
 
@@ -759,7 +879,6 @@ void playingGameWindow::findNeighbors() {
             int nr = hexa[j].row;
             int nc = hexa[j].col;
 
-            // هر کدوم مستقل بررسی بشه (if جدا، نه else-if)
 
             // Top
             if (nr == r - 2 && nc == c)
@@ -896,7 +1015,7 @@ void playingGameWindow::on_pl1_ag4_btn_clicked()
         if(!pl1_ag4_selected)
             ui->messageBox->setText("already selected");
         else
-             ui->messageBox->setText("It's Not Your Turn");
+            ui->messageBox->setText("It's Not Your Turn");
     }
 }
 
