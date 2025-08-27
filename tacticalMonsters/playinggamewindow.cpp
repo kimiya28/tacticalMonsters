@@ -26,6 +26,7 @@ string attacker = "";
 bool startSelection = true;
 bool targetSelection = false;
 bool agentSelector = true;
+bool waterBgChanged = false;
 bool pl1_ag1_clicked = false;
 bool pl1_ag2_clicked = false;
 bool pl1_ag3_clicked = false;
@@ -127,6 +128,8 @@ bool pl2_ag22_selected = true;
 bool pl2_ag23_selected = true;
 bool pl2_ag24_selected = true;
 
+
+
 WaterWalking Billy1(320, 3, 90, 1,true,true,false,false);
 WaterWalking Reketon1(320, 2, 80, 2,true,true,false,false);
 WaterWalking Angus1(400, 2, 100, 1,true,true,false,false);
@@ -191,6 +194,8 @@ struct hexagon {
     string id;
     string color;
     string bgPath;
+    string originalBgPath;
+    Agent* agent = nullptr;
     hexagon* top = nullptr;
     hexagon* bottom = nullptr;
     hexagon* topRight = nullptr;
@@ -208,8 +213,57 @@ playingGameWindow::playingGameWindow(QWidget *parent)
     , ui(new Ui::playingGameWindow)
 {
     ui->setupUi(this);
+    agentTextBrowsers[&Billy1] = ui->pl1_Billy_hp ;
+    agentTextBrowsers[&Reketon1] = ui->pl1_Reketon_hp;
+    agentTextBrowsers[&Angus1] = ui->pl1_Angus_hp;
+    agentTextBrowsers[&Duraham1] = ui->pl1_Duraham_hp;
+    agentTextBrowsers[&ColonelBaba1] = ui->pl1_ColonelBaba_hp;
+    agentTextBrowsers[&Medusa1] = ui->pl1_Medusa_hp;
+    agentTextBrowsers[&Bunka1] = ui->pl1_Bunka_hp;
+    agentTextBrowsers[&Sanka1] = ui->pl1_Sanka_hp;
+    agentTextBrowsers[&SirLamorak1] = ui->pl1_SirLamorak_hp;
+    agentTextBrowsers[&Kabu1] = ui->pl1_Kabu_hp;
+    agentTextBrowsers[&Rajakal1] = ui->pl1_Rajakal_hp;
+    agentTextBrowsers[&Salih1] = ui->pl1_Salih_hp;
+    agentTextBrowsers[&Khan1] = ui->pl1_Khan_hp;
+    agentTextBrowsers[&Boi1] = ui->pl1_Boi_hp;
+    agentTextBrowsers[&Eloi1] = ui->pl1_Kanar_hp;
+    agentTextBrowsers[&Kanar1] = ui->pl1_Kanar_hp;
+    agentTextBrowsers[&Elsa1] = ui->pl1_Elsa_hp;
+    agentTextBrowsers[&Karissa1] = ui->pl1_Karissa_hp;
+    agentTextBrowsers[&SirPhilip1] = ui->pl1_SirPhilip_hp;
+    agentTextBrowsers[&Frost1] = ui->pl1_Frost_hp;
+    agentTextBrowsers[&Tusk1] = ui->pl1_Tusk_hp;
+    agentTextBrowsers[&Rambu1] = ui->pl1_Rambu_hp;
+    agentTextBrowsers[&Sabrina1] = ui->pl1_Sabrina_hp;
+    agentTextBrowsers[&Death1] = ui->pl1_Death_hp;
 
+    agentTextBrowsers[&Billy2] = ui->pl2_Billy_hp;
+    agentTextBrowsers[&Reketon2] = ui->pl2_Reketon_hp;
+    agentTextBrowsers[&Angus2] = ui->pl2_Angus_hp;
+    agentTextBrowsers[&Duraham2] = ui->pl2_Duraham_hp;
+    agentTextBrowsers[&ColonelBaba2] = ui->pl2_ColonelBaba_hp;
+    agentTextBrowsers[&Medusa2] = ui->pl2_Medusa_hp;
+    agentTextBrowsers[&Bunka2] = ui->pl2_Bunka_hp;
+    agentTextBrowsers[&Sanka2] = ui->pl2_Sanka_hp;
+    agentTextBrowsers[&SirLamorak2] = ui->pl2_SirLamorak_hp;
+    agentTextBrowsers[&Kabu2] = ui->pl2_Kabu_hp;
+    agentTextBrowsers[&Rajakal2] = ui->pl2_Rajakal_hp;
+    agentTextBrowsers[&Salih2] = ui->pl2_Salih_hp;
+    agentTextBrowsers[&Boi1] = ui->pl2_Boi_hp;
+    agentTextBrowsers[&Khan2] = ui->pl2_Khan_hp;
+    agentTextBrowsers[&Boi2] = ui->pl2_Boi_hp;
+    agentTextBrowsers[&Eloi2] = ui->pl2_Kanar_hp;
+    agentTextBrowsers[&Elsa2] = ui->pl2_Elsa_hp;
+    agentTextBrowsers[&Karissa2] = ui->pl2_Karissa_hp;
+    agentTextBrowsers[&SirPhilip2] = ui->pl2_SirPhilip_hp;
+    agentTextBrowsers[&Frost2] = ui->pl2_Frost_hp;
+    agentTextBrowsers[&Tusk2] = ui->pl2_Tusk_hp;
+    agentTextBrowsers[&Rambu2] = ui->pl2_Rambu_hp;
+    agentTextBrowsers[&Sabrina2] = ui->pl2_Sabrina_hp;
+    agentTextBrowsers[&Death2] = ui->pl2_Death_hp;
 }
+
 
 QPolygonF playingGameWindow::createHexagon(QPointF center, double size){
     QPolygonF hex;
@@ -236,7 +290,6 @@ void playingGameWindow::openFile()
     filters << "*.txt";
     directory.setNameFilters(filters);
 
-    // لیست تمام فایلهای داخل پوشه
     QStringList txtFiles = directory.entryList(QDir::Files);
 
     if (txtFiles.isEmpty()) {
@@ -244,14 +297,12 @@ void playingGameWindow::openFile()
         return;
     }
 
-    // انتخاب تصادفی یک فایل از لیست
     int randomIndex = QRandomGenerator::global()->bounded(txtFiles.size());
     QString selectedFile = txtFiles.at(randomIndex);
     QString filePath = directory.filePath(selectedFile);
 
     qDebug() << "Randomly selected file:" << filePath;
 
-    // باز کردن فایل انتخاب‌شده
     QFile mapFile(filePath);
     if (!mapFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qDebug() << "Could not open the file:" << filePath;
@@ -281,22 +332,28 @@ void playingGameWindow::openFile()
                 if(line[position + 1] == " "){
                     id = ".";
                     hexa[hexCount].bgPath = ":/src/images/ground.jpg";
+                    hexa[hexCount].originalBgPath = ":/src/images/ground.jpg";
+
                 }
                 else if(line[position + 1] == "1"){
                     id = "1";
                     hexa[hexCount].bgPath = ":/src/images/ground.jpg";
+                    hexa[hexCount].originalBgPath = ":/src/images/ground.jpg";
                 }
                 else if(line[position + 1] == "2"){
                     id = "2";
                     hexa[hexCount].bgPath = ":/src/images/ground.jpg";
+                    hexa[hexCount].originalBgPath = ":/src/images/ground.jpg";
                 }
                 else if(line[position + 1] == "~"){
                     id = "~";
                     hexa[hexCount].bgPath = ":/src/images/water.jpg";
+                    hexa[hexCount].originalBgPath = ":/src/images/water.jpg";
                 }
                 else if(line[position + 1] == "#"){
                     id = "#";
                     hexa[hexCount].bgPath = ":/src/images/stone.jpg";
+                    hexa[hexCount].originalBgPath = ":/src/images/stone.jpg";
                 }
 
                 hexa[hexCount].id = id;
@@ -369,7 +426,7 @@ void playingGameWindow::createHexButton(int index){
     hexButton[index] = button;
     button->show();
 }
-// متد کلیک روی شش ضلعی
+
 void playingGameWindow::hexagonClicked(int index){
 
 
@@ -476,10 +533,8 @@ void playingGameWindow::hexagonClicked(int index){
             startSelection = false ;
 
 
-
+            // شرط اینکه هدف انتخابی برای حرکت زمین باشه
         } else if(startSelection == false && targetSelection == true && hexa[index].bgPath == ":/src/images/ground.jpg"){
-
-            qDebug() << "target selection method " << hexa[index].bgPath ;
             targetIndex = index ;
             bfsSet(startHex, targetIndex , 41);
             targetSelection = false ;
@@ -487,6 +542,25 @@ void playingGameWindow::hexagonClicked(int index){
             playerRound = 2 ;
             ui->messageBox->setText("Round 2");
 
+            //شرط این که زمین نباشه و یا آب باشه یا سنگ
+        }  else if(startSelection == false && targetSelection == true && hexa[index].bgPath != ":/src/images/ground.jpg"
+                   && (hexa[index].bgPath == ":/src/images/water.jpg" || hexa[index].bgPath == ":/src/images/stone.jpg")){
+            targetIndex = index;
+            waterBgChanged = true;
+            bfsSet(startHex, targetIndex , 41);
+            targetSelection = false;
+            startSelection = true;
+            playerRound = 2;
+            ui->messageBox->setText("Round 2");
+
+            // شرط اینکه روی ایجنت خودمون یا حریف کلیک کنیم
+        }   else if(startSelection == false && targetSelection == true && (hexa[index].id == "1" || hexa[index].id == "2" )){
+            targetIndex = index;
+            bfsSet(startHex, targetIndex , 41);
+            targetSelection = false;
+            startSelection = true;
+            playerRound = 2;
+            ui->messageBox->setText("Round 2");
         }
 
     } else if(playerRound == 2){
@@ -582,45 +656,82 @@ void playingGameWindow::hexagonClicked(int index){
                 pl2_ag24_clicked = false;
             }
 
-
             updateHexButton(index);
 
+            // شرط اینکه هدف انتخابی برای حرکت زمین باشه
         }  else if(hexa[index].id == "2" && hexa[index].bgPath != ":/src/images/ground.jpg" && startSelection ){
             ui->messageBox->setText("now select your target");
             targetSelection = true;
-
             startHex = index ;
             startSelection = false ;
 
-
-
         } else if(startSelection == false && targetSelection == true){
 
-
             targetIndex = index ;
-
             bfsSet(startHex, targetIndex , 41);
-
             targetSelection = false ;
             startSelection = true ;
             playerRound = 1 ;
+            ui->messageBox->setText("Round 1");
 
+            //شرط این که زمین نباشه و یا آب باشه یا سنگ
+        } else if(startSelection == false && targetSelection == true && hexa[index].bgPath != ":/src/images/ground.jpg"
+                   && (hexa[index].bgPath == ":/src/images/water.jpg" || hexa[index].bgPath == ":/src/images/stone.jpg")){
+
+            targetIndex = index;
+            waterBgChanged = true;
+            bfsSet(startHex, targetIndex , 41);
+            targetSelection = false;
+            startSelection = true;
+            playerRound = 1;
+            ui->messageBox->setText("Round 1");
+
+            // شرط اینکه روی ایجنت خودمون یا حریف کلیک کنیم
+        }   else if(startSelection == false && targetSelection == true && (hexa[index].id == "1" || hexa[index].id == "2" )){
+
+            targetIndex = index;
+            bfsSet(startHex, targetIndex , 41);
+            targetSelection = false;
+            startSelection = true;
+            playerRound = 1;
             ui->messageBox->setText("Round 1");
         }
 
     }
+
     roundCounter++;
     if(roundCounter == 4)
         playerRound = 2;
     if(roundCounter == 8){
         playerRound = 1;
         agentSelector = false;
+
+        //آپدیت  آیدی همه شش ضلعی هایی که زمین هستن بعد از انتخاب ایجنتها
+        for(int i = 0; i < 41; i++){
+            if(hexa[i].bgPath == ":/src/images/ground.jpg" && hexa[i].id == "1") {
+
+                hexa[i].id = ".";
+                updateHexButton(i);
+
+            }
+            if(hexa[i].bgPath == ":/src/images/ground.jpg" && hexa[i].id == "2") {
+
+                hexa[i].id = ".";
+                updateHexButton(i);
+
+            }
+        }
     }
 }
 
-
+// تابع پیمایش
 void playingGameWindow::bfsSet(int startIndex, int targetIndex, int hexCount) {
     int maxLevel;
+    bool waterWalking ;
+    bool standOnWater ;
+    bool rockWalking ;
+    bool standOnRock ;
+
     if (startIndex < 0 || startIndex >= hexCount) return;
     if (targetIndex < 0 || targetIndex >= hexCount) return;
     if (startIndex == targetIndex) return;
@@ -630,179 +741,174 @@ void playingGameWindow::bfsSet(int startIndex, int targetIndex, int hexCount) {
 
     if(hexa[startIndex].bgPath == ":/src/images/Agent/Billy.png"){
         maxLevel = Billy1.getMobility();
-        bool waterWalking = Billy1.getWaterWalking();
-        bool standOnWater = Billy1.getStandOnWater();
-        bool rockWalking = Billy1.getRockWalking();
-        bool standOnRock = Billy1.getStandOnRock();
+        waterWalking = Billy1.getWaterWalking();
+        standOnWater = Billy1.getStandOnWater();
+        rockWalking = Billy1.getRockWalking();
+        standOnRock = Billy1.getStandOnRock();
     }
     if(hexa[startIndex].bgPath == ":/src/images/Agent/Reketon.png"){
         maxLevel = Reketon1.getMobility();
-        bool waterWalking = Reketon1.getWaterWalking();
-        bool standOnWater = Reketon1.getStandOnWater();
-        bool rockWalking = Reketon1.getRockWalking();
-        bool standOnRock = Reketon1.getStandOnRock();
+        waterWalking = Reketon1.getWaterWalking();
+        standOnWater = Reketon1.getStandOnWater();
+        rockWalking = Reketon1.getRockWalking();
+        standOnRock = Reketon1.getStandOnRock();
     }
     if(hexa[startIndex].bgPath == ":/src/images/Agent/Angus.png"){
         maxLevel = Angus1.getMobility();
-        bool waterWalking = Angus1.getWaterWalking();
-        bool standOnWater = Angus1.getStandOnWater();
-        bool rockWalking = Angus1.getRockWalking();
-        bool standOnRock = Angus1.getStandOnRock();
+        waterWalking = Angus1.getWaterWalking();
+        standOnWater = Angus1.getStandOnWater();
+        rockWalking = Angus1.getRockWalking();
+        standOnRock = Angus1.getStandOnRock();
     }
     if(hexa[startIndex].bgPath == ":/src/images/Agent/Duraham.png"){
         maxLevel = Duraham1.getMobility();
-        bool waterWalking = Duraham1.getWaterWalking();
-        bool standOnWater = Duraham1.getStandOnWater();
-        bool rockWalking = Duraham1.getRockWalking();
-        bool standOnRock = Duraham1.getStandOnRock();
+        waterWalking = Duraham1.getWaterWalking();
+        standOnWater = Duraham1.getStandOnWater();
+        rockWalking = Duraham1.getRockWalking();
+        standOnRock = Duraham1.getStandOnRock();
     }
     if(hexa[startIndex].bgPath == ":/src/images/Agent/Colonel Baba.png"){
         maxLevel = ColonelBaba1.getMobility();
-        bool waterWalking = ColonelBaba1.getWaterWalking();
-        bool standOnWater = ColonelBaba1.getStandOnWater();
-        bool rockWalking = ColonelBaba1.getRockWalking();
-        bool standOnRock = ColonelBaba1.getStandOnRock();
+        waterWalking = ColonelBaba1.getWaterWalking();
+        standOnWater = ColonelBaba1.getStandOnWater();
+        rockWalking = ColonelBaba1.getRockWalking();
+        standOnRock = ColonelBaba1.getStandOnRock();
     }
     if(hexa[startIndex].bgPath == ":/src/images/Agent/Medusa.png"){
         maxLevel = Medusa1.getMobility();
-        bool waterWalking = Medusa1.getWaterWalking();
-        bool standOnWater = Medusa1.getStandOnWater();
-        bool rockWalking = Medusa1.getRockWalking();
-        bool standOnRock = Medusa1.getStandOnRock();
+        waterWalking = Medusa1.getWaterWalking();
+        standOnWater = Medusa1.getStandOnWater();
+        rockWalking = Medusa1.getRockWalking();
+        standOnRock = Medusa1.getStandOnRock();
     }
     if(hexa[startIndex].bgPath == ":/src/images/Agent/Bunka.png"){
         maxLevel = Bunka1.getMobility();
-        bool waterWalking = Bunka1.getWaterWalking();
-        bool standOnWater = Bunka1.getStandOnWater();
-        bool rockWalking = Bunka1.getRockWalking();
-        bool standOnRock = Bunka1.getStandOnRock();
+        waterWalking = Bunka1.getWaterWalking();
+        standOnWater = Bunka1.getStandOnWater();
+        rockWalking = Bunka1.getRockWalking();
+        standOnRock = Bunka1.getStandOnRock();
     }
     if(hexa[startIndex].bgPath == ":/src/images/Agent/Sanka.png"){
         maxLevel = Sanka1.getMobility();
-        bool waterWalking = Sanka1.getWaterWalking();
-        bool standOnWater = Sanka1.getStandOnWater();
-        bool rockWalking = Sanka1.getRockWalking();
-        bool standOnRock = Sanka1.getStandOnRock();
+        waterWalking = Sanka1.getWaterWalking();
+        standOnWater = Sanka1.getStandOnWater();
+        rockWalking = Sanka1.getRockWalking();
+        standOnRock = Sanka1.getStandOnRock();
     }
 
     if(hexa[startIndex].bgPath == ":/src/images/Agent/Sir Lamorak.png"){
         maxLevel = SirLamorak1.getMobility();
-        bool waterWalking = SirLamorak1.getWaterWalking();
-        bool standOnWater = SirLamorak1.getStandOnWater();
-        bool rockWalking = SirLamorak1.getRockWalking();
-        bool standOnRock = SirLamorak1.getStandOnRock();
+        waterWalking = SirLamorak1.getWaterWalking();
+        standOnWater = SirLamorak1.getStandOnWater();
+        rockWalking = SirLamorak1.getRockWalking();
+        standOnRock = SirLamorak1.getStandOnRock();
     }
     if(hexa[startIndex].bgPath == ":/src/images/Agent/Kabu.png"){
         maxLevel = Kabu1.getMobility();
-        bool waterWalking = Kabu1.getWaterWalking();
-        bool standOnWater = Kabu1.getStandOnWater();
-        bool rockWalking = Kabu1.getRockWalking();
-        bool standOnRock = Kabu1.getStandOnRock();
+        waterWalking = Kabu1.getWaterWalking();
+        standOnWater = Kabu1.getStandOnWater();
+        rockWalking = Kabu1.getRockWalking();
+        standOnRock = Kabu1.getStandOnRock();
     }
     if(hexa[startIndex].bgPath == ":/src/images/Agent/Rajakal.png"){
         maxLevel = Rajakal1.getMobility();
-        bool waterWalking = Rajakal1.getWaterWalking();
-        bool standOnWater = Rajakal1.getStandOnWater();
-        bool rockWalking = Rajakal1.getRockWalking();
-        bool standOnRock = Rajakal1.getStandOnRock();
+        waterWalking = Rajakal1.getWaterWalking();
+        standOnWater = Rajakal1.getStandOnWater();
+        rockWalking = Rajakal1.getRockWalking();
+        standOnRock = Rajakal1.getStandOnRock();
     }
     if(hexa[startIndex].bgPath == ":/src/images/Agent/Salih.png"){
         maxLevel = Salih1.getMobility();
-        bool waterWalking = Salih1.getWaterWalking();
-        bool standOnWater = Salih1.getStandOnWater();
-        bool rockWalking = Salih1.getRockWalking();
-        bool standOnRock = Salih1.getStandOnRock();
+        waterWalking = Salih1.getWaterWalking();
+        standOnWater = Salih1.getStandOnWater();
+        rockWalking = Salih1.getRockWalking();
+        standOnRock = Salih1.getStandOnRock();
     }
     if(hexa[startIndex].bgPath == ":/src/images/Agent/Khan.png"){
         maxLevel = Khan1.getMobility();
-        bool waterWalking = Khan1.getWaterWalking();
-        bool standOnWater = Khan1.getStandOnWater();
-        bool rockWalking = Khan1.getRockWalking();
-        bool standOnRock = Khan1.getStandOnRock();
+        waterWalking = Khan1.getWaterWalking();
+        standOnWater = Khan1.getStandOnWater();
+        rockWalking = Khan1.getRockWalking();
+        standOnRock = Khan1.getStandOnRock();
     }
     if(hexa[startIndex].bgPath == ":/src/images/Agent/Boi.png"){
         maxLevel = Boi1.getMobility();
-        bool waterWalking = Boi1.getWaterWalking();
-        bool standOnWater = Boi1.getStandOnWater();
-        bool rockWalking = Boi1.getRockWalking();
-        bool standOnRock = Boi1.getStandOnRock();
+        waterWalking = Boi1.getWaterWalking();
+        standOnWater = Boi1.getStandOnWater();
+        rockWalking = Boi1.getRockWalking();
+        standOnRock = Boi1.getStandOnRock();
     }
     if(hexa[startIndex].bgPath == ":/src/images/Agent/Eloi.png"){
         maxLevel = Eloi1.getMobility();
-        bool waterWalking = Eloi1.getWaterWalking();
-        bool standOnWater = Eloi1.getStandOnWater();
-        bool rockWalking = Eloi1.getRockWalking();
-        bool standOnRock = Eloi1.getStandOnRock();
+        waterWalking = Eloi1.getWaterWalking();
+        standOnWater = Eloi1.getStandOnWater();
+        rockWalking = Eloi1.getRockWalking();
+        standOnRock = Eloi1.getStandOnRock();
     }
     if(hexa[startIndex].bgPath == ":/src/images/Agent/Kanar.png"){
         maxLevel = Kanar1.getMobility();
-        bool waterWalking = Kanar1.getWaterWalking();
-        bool standOnWater = Kanar1.getStandOnWater();
-        bool rockWalking = Kanar1.getRockWalking();
-        bool standOnRock = Kanar1.getStandOnRock();
+        waterWalking = Kanar1.getWaterWalking();
+        standOnWater = Kanar1.getStandOnWater();
+        rockWalking = Kanar1.getRockWalking();
+        standOnRock = Kanar1.getStandOnRock();
     }
     if(hexa[startIndex].bgPath == ":/src/images/Agent/Elsa.png"){
         maxLevel = Elsa1.getMobility();
-        bool waterWalking = Elsa1.getWaterWalking();
-        bool standOnWater = Elsa1.getStandOnWater();
-        bool rockWalking = Elsa1.getRockWalking();
-        bool standOnRock = Elsa1.getStandOnRock();
+        waterWalking = Elsa1.getWaterWalking();
+        standOnWater = Elsa1.getStandOnWater();
+        rockWalking = Elsa1.getRockWalking();
+        standOnRock = Elsa1.getStandOnRock();
     }
     if(hexa[startIndex].bgPath == ":/src/images/Agent/Karissa.png"){
         maxLevel = Karissa1.getMobility();
-        bool waterWalking = Karissa1.getWaterWalking();
-        bool standOnWater = Karissa1.getStandOnWater();
-        bool rockWalking = Karissa1.getRockWalking();
-        bool standOnRock = Karissa1.getStandOnRock();
+        waterWalking = Karissa1.getWaterWalking();
+        standOnWater = Karissa1.getStandOnWater();
+        rockWalking = Karissa1.getRockWalking();
+        standOnRock = Karissa1.getStandOnRock();
     }
     if(hexa[startIndex].bgPath == ":/src/images/Agent/Sir Philip.png"){
         maxLevel = SirPhilip1.getMobility();
-        bool waterWalking = SirPhilip1.getWaterWalking();
-        bool standOnWater = SirPhilip1.getStandOnWater();
-        bool rockWalking = SirPhilip1.getRockWalking();
-        bool standOnRock = SirPhilip1.getStandOnRock();
+        waterWalking = SirPhilip1.getWaterWalking();
+        standOnWater = SirPhilip1.getStandOnWater();
+        rockWalking = SirPhilip1.getRockWalking();
+        standOnRock = SirPhilip1.getStandOnRock();
     }
     if(hexa[startIndex].bgPath == ":/src/images/Agent/Frost.png"){
         maxLevel = Frost1.getMobility();
-        bool waterWalking = Frost1.getWaterWalking();
-        bool standOnWater = Frost1.getStandOnWater();
-        bool rockWalking = Frost1.getRockWalking();
-        bool standOnRock = Frost1.getStandOnRock();
+        waterWalking = Frost1.getWaterWalking();
+        standOnWater = Frost1.getStandOnWater();
+        rockWalking = Frost1.getRockWalking();
+        standOnRock = Frost1.getStandOnRock();
     }
     if(hexa[startIndex].bgPath == ":/src/images/Agent/Tusk.png"){
         maxLevel = Tusk1.getMobility();
-        bool waterWalking = Tusk1.getWaterWalking();
-        bool standOnWater = Tusk1.getStandOnWater();
-        bool rockWalking = Tusk1.getRockWalking();
-        bool standOnRock = Tusk1.getStandOnRock();
+        waterWalking = Tusk1.getWaterWalking();
+        standOnWater = Tusk1.getStandOnWater();
+        rockWalking = Tusk1.getRockWalking();
+        standOnRock = Tusk1.getStandOnRock();
     }
     if(hexa[startIndex].bgPath == ":/src/images/Agent/Rambu.png"){
         maxLevel = Rambu1.getMobility();
-        bool waterWalking = Rambu1.getWaterWalking();
-        bool standOnWater = Rambu1.getStandOnWater();
-        bool rockWalking = Rambu1.getRockWalking();
-        bool standOnRock = Rambu1.getStandOnRock();
+        waterWalking = Rambu1.getWaterWalking();
+        standOnWater = Rambu1.getStandOnWater();
+        rockWalking = Rambu1.getRockWalking();
+        standOnRock = Rambu1.getStandOnRock();
     }
     if(hexa[startIndex].bgPath == ":/src/images/Agent/Sabrina.png"){
         maxLevel = Sabrina1.getMobility();
-        bool waterWalking = Sabrina1.getWaterWalking();
-        bool standOnWater = Sabrina1.getStandOnWater();
-        bool rockWalking = Sabrina1.getRockWalking();
-        bool standOnRock = Sabrina1.getStandOnRock();
+        waterWalking = Sabrina1.getWaterWalking();
+        standOnWater = Sabrina1.getStandOnWater();
+        rockWalking = Sabrina1.getRockWalking();
+        standOnRock = Sabrina1.getStandOnRock();
     }
     if(hexa[startIndex].bgPath == ":/src/images/Agent/Death.png"){
         maxLevel = Death1.getMobility();
-        bool waterWalking = Death1.getWaterWalking();
-        bool standOnWater = Death1.getStandOnWater();
-        bool rockWalking = Death1.getRockWalking();
-        bool standOnRock = Death1.getStandOnRock();
+        waterWalking = Death1.getWaterWalking();
+        standOnWater = Death1.getStandOnWater();
+        rockWalking = Death1.getRockWalking();
+        standOnRock = Death1.getStandOnRock();
     }
 
-
-    qDebug() << "maxlevel = " << maxLevel << "  start bg = " << hexa[startIndex].bgPath
-             << "  target bg = " << hexa[startIndex].bgPath
-             << " start id = " << hexa[startIndex].id
-             << " target id = " << hexa[targetSelection].id ;
 
     std::vector<bool> visited(hexCount, false);
     std::queue<int> q;
@@ -812,24 +918,219 @@ void playingGameWindow::bfsSet(int startIndex, int targetIndex, int hexCount) {
     levelQueue.push(0);
     visited[startIndex] = true;
 
+    const char* dirName[6] = {"top","bottom","topLeft","topRight","bottomLeft","bottomRight"};
+
     while (!q.empty()) {
         int current = q.front(); q.pop();
         int level = levelQueue.front(); levelQueue.pop();
-        qDebug() << "level " << level << "  maxlevel : " << maxLevel ;
-        if (level > maxLevel) continue;
+
+
+        if (level > maxLevel) {
+            continue;
+        }
 
         if (current == targetIndex) {
-            hexa[targetIndex].bgPath = hexa[startIndex].bgPath;
-            if (playerRound == 1) hexa[targetIndex].id = "1";
-            if (playerRound == 2) hexa[targetIndex].id = "2";
-            createHexButton(targetIndex);
 
-            hexa[startIndex].bgPath = ":/src/images/ground.jpg";
-            hexa[startIndex].id = ".";
-            createHexButton(startIndex);
 
-            return;
+                        if (hexa[targetIndex].bgPath == ":/src/images/ground.jpg"
+                || (hexa[targetIndex].bgPath == ":/src/images/water.jpg" && standOnWater)
+                || (hexa[targetIndex].bgPath == ":/src/images/stone.jpg" && standOnRock)) {
+
+                qDebug() << "  ✅ Target reached at level:" << level;
+
+                hexa[targetIndex].bgPath = hexa[startIndex].bgPath;
+                if (playerRound == 1) hexa[targetIndex].id = "1";
+                if (playerRound == 2) hexa[targetIndex].id = "2";
+                updateHexButton(targetIndex);
+
+                hexa[startIndex].bgPath = hexa[startIndex].originalBgPath;
+                if (hexa[startIndex].originalBgPath == ":/src/images/ground.jpg") {
+                    hexa[startIndex].id = ".";
+                }
+                else if (hexa[startIndex].originalBgPath == ":/src/images/water.jpg") {
+                    hexa[startIndex].id = "~";
+                }
+                else if (hexa[startIndex].originalBgPath == ":/src/images/stone.jpg") {
+                    hexa[startIndex].id = "#";
+                }
+                else {
+                    hexa[startIndex].id = ".";
+                }
+
+                updateHexButton(startIndex);
+                return;
+            }
+            else if (hexa[targetIndex].id == "2" || hexa[targetIndex].id == "1") {
+                if(playerRound == 1){
+                    if(hexa[startIndex].bgPath == ":/src/images/Agent/Angus.png") hexa[startIndex].agent = &Angus1;
+                    if(hexa[targetIndex].bgPath == ":/src/images/Agent/Angus.png") hexa[targetIndex].agent = &Angus2;
+                    if(hexa[startIndex].bgPath == ":/src/images/Agent/Billy.png") hexa[startIndex].agent = &Billy1;
+                    if(hexa[targetIndex].bgPath == ":/src/images/Agent/Billy.png") hexa[targetIndex].agent = &Billy2;
+                    if(hexa[startIndex].bgPath == ":/src/images/Agent/Boi.png") hexa[startIndex].agent = &Boi1;
+                    if(hexa[targetIndex].bgPath == ":/src/images/Agent/Boi.png") hexa[targetIndex].agent = &Boi2;
+                    if(hexa[startIndex].bgPath == ":/src/images/Agent/Bunka.png") hexa[startIndex].agent = &Bunka1;
+                    if(hexa[targetIndex].bgPath == ":/src/images/Agent/Bunka.png") hexa[targetIndex].agent = &Bunka2;
+                    if(hexa[startIndex].bgPath == ":/src/images/Agent/Colonel Baba.png") hexa[startIndex].agent = &ColonelBaba1;
+                    if(hexa[targetIndex].bgPath == ":/src/images/Agent/Colonel Baba.png") hexa[targetIndex].agent = &ColonelBaba2;
+                    if(hexa[startIndex].bgPath == ":/src/images/Agent/Death.png") hexa[startIndex].agent = &Death1;
+                    if(hexa[targetIndex].bgPath == ":/src/images/Agent/Death.png") hexa[targetIndex].agent = &Death2;
+                    if(hexa[startIndex].bgPath == ":/src/images/Agent/Duraham.png") hexa[startIndex].agent = &Duraham1;
+                    if(hexa[targetIndex].bgPath == ":/src/images/Agent/Duraham.png") hexa[targetIndex].agent = &Duraham2;
+                    if(hexa[startIndex].bgPath == ":/src/images/Agent/Eloi.png") hexa[startIndex].agent = &Eloi1;
+                    if(hexa[targetIndex].bgPath == ":/src/images/Agent/Eloi.png") hexa[targetIndex].agent = &Eloi2;
+                    if(hexa[startIndex].bgPath == ":/src/images/Agent/Elsa.png") hexa[startIndex].agent = &Elsa1;
+                    if(hexa[targetIndex].bgPath == ":/src/images/Agent/Elsa.png") hexa[targetIndex].agent = &Elsa2;
+                    if(hexa[startIndex].bgPath == ":/src/images/Agent/Frost.png") hexa[startIndex].agent = &Frost1;
+                    if(hexa[targetIndex].bgPath == ":/src/images/Agent/Frost.png") hexa[targetIndex].agent = &Frost2;
+                    if(hexa[startIndex].bgPath == ":/src/images/Agent/Kabu.png") hexa[startIndex].agent = &Kabu1;
+                    if(hexa[targetIndex].bgPath == ":/src/images/Agent/Kabu.png") hexa[targetIndex].agent = &Kabu2;
+                    if(hexa[startIndex].bgPath == ":/src/images/Agent/Kanar.png") hexa[startIndex].agent = &Kanar1;
+                    if(hexa[targetIndex].bgPath == ":/src/images/Agent/Kanar.png") hexa[targetIndex].agent = &Kanar2;
+                    if(hexa[startIndex].bgPath == ":/src/images/Agent/Karissa.png") hexa[startIndex].agent = &Karissa1;
+                    if(hexa[targetIndex].bgPath == ":/src/images/Agent/Karissa.png") hexa[targetIndex].agent = &Karissa2;
+                    if(hexa[startIndex].bgPath == ":/src/images/Agent/Khan.png") hexa[startIndex].agent = &Khan1;
+                    if(hexa[targetIndex].bgPath == ":/src/images/Agent/Khan.png") hexa[targetIndex].agent = &Khan2;
+                    if(hexa[startIndex].bgPath == ":/src/images/Agent/Medusa.png") hexa[startIndex].agent = &Medusa1;
+                    if(hexa[targetIndex].bgPath == ":/src/images/Agent/Medusa.png") hexa[targetIndex].agent = &Medusa2;
+                    if(hexa[startIndex].bgPath == ":/src/images/Agent/Rajakal.png") hexa[startIndex].agent = &Rajakal1;
+                    if(hexa[targetIndex].bgPath == ":/src/images/Agent/Rajakal.png") hexa[targetIndex].agent = &Rajakal2;
+                    if(hexa[startIndex].bgPath == ":/src/images/Agent/Rambu.png") hexa[startIndex].agent = &Rambu1;
+                    if(hexa[targetIndex].bgPath == ":/src/images/Agent/Rambu.png") hexa[targetIndex].agent = &Rambu2;
+                    if(hexa[startIndex].bgPath == ":/src/images/Agent/Reketon.png") hexa[startIndex].agent = &Reketon1;
+                    if(hexa[targetIndex].bgPath == ":/src/images/Agent/Reketon.png") hexa[targetIndex].agent = &Reketon2;
+                    if(hexa[startIndex].bgPath == ":/src/images/Agent/Sabrina.png") hexa[startIndex].agent = &Sabrina1;
+                    if(hexa[targetIndex].bgPath == ":/src/images/Agent/Sabrina.png") hexa[targetIndex].agent = &Sabrina2;
+                    if(hexa[startIndex].bgPath == ":/src/images/Agent/Salih.png") hexa[startIndex].agent = &Salih1;
+                    if(hexa[targetIndex].bgPath == ":/src/images/Agent/Salih.png") hexa[targetIndex].agent = &Salih2;
+                    if(hexa[startIndex].bgPath == ":/src/images/Agent/Sanka.png") hexa[startIndex].agent = &Sanka1;
+                    if(hexa[targetIndex].bgPath == ":/src/images/Agent/Sanka.png") hexa[targetIndex].agent = &Sanka2;
+                    if(hexa[startIndex].bgPath == ":/src/images/Agent/Sir Lamorak.png") hexa[startIndex].agent = &SirLamorak1;
+                    if(hexa[targetIndex].bgPath == ":/src/images/Agent/Sir Lamorak.png") hexa[targetIndex].agent = &SirLamorak2;
+                    if(hexa[startIndex].bgPath == ":/src/images/Agent/Sir Philip.png") hexa[startIndex].agent = &SirPhilip1;
+                    if(hexa[targetIndex].bgPath == ":/src/images/Agent/Sir Philip.png") hexa[targetIndex].agent = &SirPhilip2;
+                    if(hexa[startIndex].bgPath == ":/src/images/Agent/Tusk.png") hexa[startIndex].agent = &Tusk1;
+                    if(hexa[targetIndex].bgPath == ":/src/images/Agent/Tusk.png") hexa[targetIndex].agent = &Tusk2;
+                }else if(playerRound == 2 ){
+                    if(hexa[startIndex].bgPath == ":/src/images/Agent/Angus.png") hexa[startIndex].agent = &Angus2;
+                    if(hexa[targetIndex].bgPath == ":/src/images/Agent/Angus.png") hexa[targetIndex].agent = &Angus1;
+                    if(hexa[startIndex].bgPath == ":/src/images/Agent/Billy.png") hexa[startIndex].agent = &Billy2;
+                    if(hexa[targetIndex].bgPath == ":/src/images/Agent/Billy.png") hexa[targetIndex].agent = &Billy1;
+                    if(hexa[startIndex].bgPath == ":/src/images/Agent/Boi.png") hexa[startIndex].agent = &Boi2;
+                    if(hexa[targetIndex].bgPath == ":/src/images/Agent/Boi.png") hexa[targetIndex].agent = &Boi1;
+                    if(hexa[startIndex].bgPath == ":/src/images/Agent/Bunka.png") hexa[startIndex].agent = &Bunka2;
+                    if(hexa[targetIndex].bgPath == ":/src/images/Agent/Bunka.png") hexa[targetIndex].agent = &Bunka1;
+                    if(hexa[startIndex].bgPath == ":/src/images/Agent/Colonel Baba.png") hexa[startIndex].agent = &ColonelBaba2;
+                    if(hexa[targetIndex].bgPath == ":/src/images/Agent/Colonel Baba.png") hexa[targetIndex].agent = &ColonelBaba1;
+                    if(hexa[startIndex].bgPath == ":/src/images/Agent/Death.png") hexa[startIndex].agent = &Death2;
+                    if(hexa[targetIndex].bgPath == ":/src/images/Agent/Death.png") hexa[targetIndex].agent = &Death1;
+                    if(hexa[startIndex].bgPath == ":/src/images/Agent/Duraham.png") hexa[startIndex].agent = &Duraham2;
+                    if(hexa[targetIndex].bgPath == ":/src/images/Agent/Duraham.png") hexa[targetIndex].agent = &Duraham1;
+                    if(hexa[startIndex].bgPath == ":/src/images/Agent/Eloi.png") hexa[startIndex].agent = &Eloi2;
+                    if(hexa[targetIndex].bgPath == ":/src/images/Agent/Eloi.png") hexa[targetIndex].agent = &Eloi1;
+                    if(hexa[startIndex].bgPath == ":/src/images/Agent/Elsa.png") hexa[startIndex].agent = &Elsa2;
+                    if(hexa[targetIndex].bgPath == ":/src/images/Agent/Elsa.png") hexa[targetIndex].agent = &Elsa1;
+                    if(hexa[startIndex].bgPath == ":/src/images/Agent/Frost.png") hexa[startIndex].agent = &Frost2;
+                    if(hexa[targetIndex].bgPath == ":/src/images/Agent/Frost.png") hexa[targetIndex].agent = &Frost1;
+                    if(hexa[startIndex].bgPath == ":/src/images/Agent/Kabu.png") hexa[startIndex].agent = &Kabu2;
+                    if(hexa[targetIndex].bgPath == ":/src/images/Agent/Kabu.png") hexa[targetIndex].agent = &Kabu1;
+                    if(hexa[startIndex].bgPath == ":/src/images/Agent/Kanar.png") hexa[startIndex].agent = &Kanar2;
+                    if(hexa[targetIndex].bgPath == ":/src/images/Agent/Kanar.png") hexa[targetIndex].agent = &Kanar1;
+                    if(hexa[startIndex].bgPath == ":/src/images/Agent/Karissa.png") hexa[startIndex].agent = &Karissa2;
+                    if(hexa[targetIndex].bgPath == ":/src/images/Agent/Karissa.png") hexa[targetIndex].agent = &Karissa1;
+                    if(hexa[startIndex].bgPath == ":/src/images/Agent/Khan.png") hexa[startIndex].agent = &Khan2;
+                    if(hexa[targetIndex].bgPath == ":/src/images/Agent/Khan.png") hexa[targetIndex].agent = &Khan1;
+                    if(hexa[startIndex].bgPath == ":/src/images/Agent/Medusa.png") hexa[startIndex].agent = &Medusa2;
+                    if(hexa[targetIndex].bgPath == ":/src/images/Agent/Medusa.png") hexa[targetIndex].agent = &Medusa1;
+                    if(hexa[startIndex].bgPath == ":/src/images/Agent/Rajakal.png") hexa[startIndex].agent = &Rajakal2;
+                    if(hexa[targetIndex].bgPath == ":/src/images/Agent/Rajakal.png") hexa[targetIndex].agent = &Rajakal1;
+                    if(hexa[startIndex].bgPath == ":/src/images/Agent/Rambu.png") hexa[startIndex].agent = &Rambu2;
+                    if(hexa[targetIndex].bgPath == ":/src/images/Agent/Rambu.png") hexa[targetIndex].agent = &Rambu1;
+                    if(hexa[startIndex].bgPath == ":/src/images/Agent/Reketon.png") hexa[startIndex].agent = &Reketon2;
+                    if(hexa[targetIndex].bgPath == ":/src/images/Agent/Reketon.png") hexa[targetIndex].agent = &Reketon1;
+                    if(hexa[startIndex].bgPath == ":/src/images/Agent/Sabrina.png") hexa[startIndex].agent = &Sabrina2;
+                    if(hexa[targetIndex].bgPath == ":/src/images/Agent/Sabrina.png") hexa[targetIndex].agent = &Sabrina1;
+                    if(hexa[startIndex].bgPath == ":/src/images/Agent/Salih.png") hexa[startIndex].agent = &Salih2;
+                    if(hexa[targetIndex].bgPath == ":/src/images/Agent/Salih.png") hexa[targetIndex].agent = &Salih1;
+                    if(hexa[startIndex].bgPath == ":/src/images/Agent/Sanka.png") hexa[startIndex].agent = &Sanka2;
+                    if(hexa[targetIndex].bgPath == ":/src/images/Agent/Sanka.png") hexa[targetIndex].agent = &Sanka1;
+                    if(hexa[startIndex].bgPath == ":/src/images/Agent/Sir Lamorak.png") hexa[startIndex].agent = &SirLamorak2;
+                    if(hexa[targetIndex].bgPath == ":/src/images/Agent/Sir Lamorak.png") hexa[targetIndex].agent = &SirLamorak1;
+                    if(hexa[startIndex].bgPath == ":/src/images/Agent/Sir Philip.png") hexa[startIndex].agent = &SirPhilip2;
+                    if(hexa[targetIndex].bgPath == ":/src/images/Agent/Sir Philip.png") hexa[targetIndex].agent = &SirPhilip1;
+                    if(hexa[startIndex].bgPath == ":/src/images/Agent/Tusk.png") hexa[startIndex].agent = &Tusk2;
+                    if(hexa[targetIndex].bgPath == ":/src/images/Agent/Tusk.png") hexa[targetIndex].agent = &Tusk1;
+                }
+
+
+                if (hexa[targetIndex].id != QString::number(playerRound)) {
+                    qDebug() << "⚔️ Target is another agent!";
+
+                    std::vector<std::pair<QString, int>> neighborInfo;
+
+                    hexagon* neighbors[] = {
+                        hexa[targetIndex].top,
+                        hexa[targetIndex].bottom,
+                        hexa[targetIndex].topLeft,
+                        hexa[targetIndex].topRight,
+                        hexa[targetIndex].bottomLeft,
+                        hexa[targetIndex].bottomRight
+                    };
+
+                    for (int k = 0; k < 6; k++) {
+                        hexagon* n = neighbors[k];
+                        if (n && n->bgPath == ":/src/images/ground.jpg") {
+                            int nIndex = n - &hexa[0];
+                            neighborInfo.push_back({QString::fromStdString(n->id), nIndex});
+                        }
+                    }
+
+
+                    if (!neighborInfo.empty()) {
+                        int r = std::rand() % neighborInfo.size();
+                        QString chosenID = neighborInfo[r].first;
+                        int chosenIndex = neighborInfo[r].second;
+
+                        hexa[chosenIndex].bgPath = hexa[startIndex].bgPath;
+                        hexa[chosenIndex].id = hexa[startIndex].id;
+                        hexa[chosenIndex].agent = hexa[startIndex].agent;
+                        updateHexButton(chosenIndex);
+
+
+                        if (hexa[chosenIndex].agent && hexa[targetIndex].agent) {
+                            Agent* attacker = hexa[startIndex].agent;
+                            Agent* defender = hexa[targetIndex].agent;
+
+                            attacker->setHP(attacker->getHP() - (defender->getDamage() / 2));
+                            defender->setHP(defender->getHP() - attacker->getDamage());
+
+                            if (agentTextBrowsers.contains(attacker)){
+                                agentTextBrowsers[attacker]->setText(QString::number(attacker->getHP()));
+                                agentTextBrowsers[attacker]->setStyleSheet("font-size: 6pt; color: white; font-weight: bold;");
+                            }
+                            if (agentTextBrowsers.contains(defender)){
+                                agentTextBrowsers[defender]->setText(QString::number(defender->getHP()));
+                                agentTextBrowsers[defender]->setStyleSheet("font-size: 6pt; color: white; font-weight: bold;");
+                            }
+                        }
+
+                        hexa[startIndex].bgPath = ":/src/images/ground.jpg";
+                        hexa[startIndex].id = ".";
+                        hexa[startIndex].agent = nullptr;
+                        updateHexButton(startIndex);
+
+
+                    } else {
+                        qDebug() << "No ground neighbors available";
+                    }
+                }
+
+
+            }
+            else {
+                qDebug() << "  ❌ Target found but cannot stand on it!";
+            }
         }
+
 
         hexagon* neighbors[6] = {
             hexa[current].top,
@@ -841,24 +1142,49 @@ void playingGameWindow::bfsSet(int startIndex, int targetIndex, int hexCount) {
         };
 
         for (int k = 0; k < 6; k++) {
-            if (neighbors[k] != nullptr) {
-                int nIndex = neighbors[k] - &hexa[0];
+            if (neighbors[k] == nullptr) {
+                continue;
+            }
 
-                if (nIndex >= 0 && nIndex < hexCount && !visited[nIndex]) {
-                    // فقط ground یا target
-                    if (hexa[nIndex].bgPath == ":/src/images/ground.jpg" || nIndex == targetIndex) {
-                        visited[nIndex] = true;
-                        q.push(nIndex);
-                        levelQueue.push(level + 1);
-                    }
-                }
+            int nIndex = neighbors[k] - &hexa[0];
+
+            if (!(nIndex >= 0 && nIndex < hexCount)) {
+                continue;
+            }
+
+
+            if (visited[nIndex]) {
+                continue;
+            }
+
+            bool canPass = false;
+
+            if (hexa[nIndex].bgPath == ":/src/images/ground.jpg") {
+                canPass = true;
+            }
+            else if (hexa[nIndex].bgPath == ":/src/images/water.jpg") {
+                if (standOnWater || waterWalking) canPass = true;
+            }
+            else if (hexa[nIndex].bgPath == ":/src/images/stone.jpg") {
+                if (standOnRock || rockWalking) canPass = true;
+            }
+
+
+            if (nIndex == targetIndex) {
+                canPass = true;
+            }
+
+            if (canPass) {
+                visited[nIndex] = true;
+                q.push(nIndex);
+                levelQueue.push(level + 1);
+            } else {
             }
         }
     }
 
     qDebug() << "❌ Target not reachable";
 }
-
 
 
 void playingGameWindow::findNeighbors() {
@@ -879,37 +1205,26 @@ void playingGameWindow::findNeighbors() {
             int nr = hexa[j].row;
             int nc = hexa[j].col;
 
+            if (nr == r - 2 && nc == c) hexa[i].top = &hexa[j];
+            if (nr == r + 2 && nc == c) hexa[i].bottom = &hexa[j];
 
-            // Top
-            if (nr == r - 2 && nc == c)
-                hexa[i].top = &hexa[j];
-
-            // Bottom
-            if (nr == r + 2 && nc == c)
-                hexa[i].bottom = &hexa[j];
-
-            // Top-Left
-            if (nr == r - 1 &&
-                ((r % 2 == 0 && nc == c - 1) || (r % 2 != 0 && nc == c)))
-                hexa[i].topLeft = &hexa[j];
-
-            // Top-Right
-            if (nr == r - 1 &&
-                ((r % 2 == 0 && nc == c) || (r % 2 != 0 && nc == c + 1)))
-                hexa[i].topRight = &hexa[j];
-
-            // Bottom-Left
-            if (nr == r + 1 &&
-                ((r % 2 == 0 && nc == c - 1) || (r % 2 != 0 && nc == c)))
-                hexa[i].bottomLeft = &hexa[j];
-
-            // Bottom-Right
-            if (nr == r + 1 &&
-                ((r % 2 == 0 && nc == c) || (r % 2 != 0 && nc == c + 1)))
-                hexa[i].bottomRight = &hexa[j];
+            if (r % 2 == 0) {
+                if (nr == r - 1 && nc == c) hexa[i].topLeft = &hexa[j];
+                if (nr == r - 1 && nc == c + 1)     hexa[i].topRight = &hexa[j];
+                if (nr == r + 1 && nc == c ) hexa[i].bottomLeft = &hexa[j];
+                if (nr == r + 1 && nc == c + 1)     hexa[i].bottomRight = &hexa[j];
+            } else {
+                if (nr == r - 1 && nc == c - 1 )     hexa[i].topLeft = &hexa[j];
+                if (nr == r - 1 && nc == c) hexa[i].topRight = &hexa[j];
+                if (nr == r + 1 && nc == c - 1)     hexa[i].bottomLeft = &hexa[j];
+                if (nr == r + 1 && nc == c) hexa[i].bottomRight = &hexa[j];
+            }
         }
+
+        auto idx = [&](hexagon* p){ return p ? int(p - &hexa[0]) : -1; };
     }
 }
+
 
 void playingGameWindow::updateHexButton(int index) {
     QPixmap pixmap(hexButton[index]->size());
@@ -919,17 +1234,46 @@ void playingGameWindow::updateHexButton(int index) {
     painter.setRenderHint(QPainter::Antialiasing);
 
     QPolygonF hex = createHexagon(QPointF(pixmap.width()/2, pixmap.height()/2), 48);
+
     QPainterPath path;
     path.addPolygon(hex);
     painter.setClipPath(path);
 
     QPixmap bgPixmap(QString::fromStdString(hexa[index].bgPath));
     painter.drawPixmap(pixmap.rect(), bgPixmap, bgPixmap.rect());
+
+    if (hexa[index].id == "1" && hexa[index].bgPath != ":/src/images/ground.jpg"
+        && hexa[index].bgPath != ":/src/images/select_ground.jpg"
+        && hexa[index].bgPath != ":/src/images/water.jpg"
+        && hexa[index].bgPath != ":/src/images/stone.jpg") {
+
+        painter.setClipping(false);
+        QPen pen(QColor(100, 100, 255), 20);
+        pen.setJoinStyle(Qt::MiterJoin);
+        painter.setPen(pen);
+        painter.setBrush(Qt::NoBrush);
+        painter.drawPolygon(hex);
+    }
+    if (hexa[index].id == "2" && hexa[index].bgPath != ":/src/images/ground.jpg"
+        && hexa[index].bgPath != ":/src/images/select_ground.jpg"
+        && hexa[index].bgPath != ":/src/images/water.jpg"
+        && hexa[index].bgPath != ":/src/images/stone.jpg") {
+
+        painter.setClipping(false);
+        QPen pen(QColor(255, 50, 50, 180), 20);
+        pen.setJoinStyle(Qt::MiterJoin);
+        painter.setPen(pen);
+        painter.setBrush(Qt::NoBrush);
+        painter.drawPolygon(hex);
+    }
+
     painter.end();
 
     hexButton[index]->setIcon(QIcon(pixmap));
     hexButton[index]->setIconSize(hexButton[index]->size());
 }
+
+
 
 
 void playingGameWindow::on_pl1_ag1_btn_clicked()

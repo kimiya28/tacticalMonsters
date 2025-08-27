@@ -4,6 +4,9 @@
 #include <QWidget>
 #include <QPushButton>
 #include <QPolygonF>
+#include <QTextBrowser>
+#include "classes.h"
+
 
 namespace Ui {
 class playingGameWindow;
@@ -124,6 +127,8 @@ private slots:
 
 private:
     Ui::playingGameWindow *ui;
+    QMap<Agent*, QTextBrowser*> agentTextBrowsers;
+
 };
 
 #endif // PLAYINGGAMEWINDOW_H
