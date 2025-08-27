@@ -20,9 +20,15 @@ using namespace std;
 
 int playerRound = 1;
 int roundCounter = 0;
-int startHex ;
-int targetIndex ;
+int startHex;
+int targetIndex;
+int pl1AgentNumber = 4;
+int pl2AgentNumber = 4;
 string attacker = "";
+QString message = "";
+bool finishedGame = false;
+bool player1Win = false;
+bool player2Win = false;
 bool startSelection = true;
 bool targetSelection = false;
 bool agentSelector = true;
@@ -211,8 +217,11 @@ QPushButton* hexButton[41];
 playingGameWindow::playingGameWindow(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::playingGameWindow)
+
 {
-    ui->setupUi(this);
+    ui->setupUi(this);  // حتماً اول setupUi
+
+    //اتصال تکست بروزر ها به ایجنت ها
     agentTextBrowsers[&Billy1] = ui->pl1_Billy_hp ;
     agentTextBrowsers[&Reketon1] = ui->pl1_Reketon_hp;
     agentTextBrowsers[&Angus1] = ui->pl1_Angus_hp;
@@ -427,28 +436,28 @@ void playingGameWindow::createHexButton(int index){
     button->show();
 }
 
+
 void playingGameWindow::hexagonClicked(int index){
-
-
     if(playerRound == 1){
-        if(hexa[index].id == "1" && (pl1_ag1_clicked || pl1_ag2_clicked || pl1_ag3_clicked || pl1_ag4_clicked
-                                      || pl1_ag5_clicked || pl1_ag6_clicked || pl1_ag7_clicked || pl1_ag8_clicked
-                                      || pl1_ag9_clicked || pl1_ag10_clicked || pl1_ag11_clicked || pl1_ag12_clicked
-                                      || pl1_ag13_clicked || pl1_ag14_clicked || pl1_ag15_clicked || pl1_ag16_clicked
-                                      || pl1_ag17_clicked || pl1_ag18_clicked || pl1_ag19_clicked || pl1_ag20_clicked
-                                      || pl1_ag21_clicked || pl1_ag22_clicked || pl1_ag23_clicked || pl1_ag24_clicked)){
+       if(hexa[index].id == "1" && hexa[index].bgPath == ":/src/images/select_ground.jpg"
+                                    &&(pl1_ag1_clicked || pl1_ag2_clicked || pl1_ag3_clicked || pl1_ag4_clicked
+                                    || pl1_ag5_clicked || pl1_ag6_clicked || pl1_ag7_clicked || pl1_ag8_clicked
+                                    || pl1_ag9_clicked || pl1_ag10_clicked || pl1_ag11_clicked || pl1_ag12_clicked
+                                    || pl1_ag13_clicked || pl1_ag14_clicked || pl1_ag15_clicked || pl1_ag16_clicked
+                                    || pl1_ag17_clicked || pl1_ag18_clicked || pl1_ag19_clicked || pl1_ag20_clicked
+                                    || pl1_ag21_clicked || pl1_ag22_clicked || pl1_ag23_clicked || pl1_ag24_clicked)){
+
             ui->messageBox->setText(QString("You cliked on hex %1 with id %2")
                                         .arg(index)
                                         .arg(QString::fromStdString(hexa[index].id)));
-
+            //بعد از نشستن یک ایجنت در زمین دوباره زمین از حالت انتخاب در بیاد
             for(int i = 0; i < 41; i++){
                 if(hexa[i].bgPath == ":/src/images/select_ground.jpg") {
                     hexa[i].bgPath = ":/src/images/ground.jpg";
-
                     updateHexButton(i);
-
                 }
             }
+
             if(pl1_ag1_clicked){
                 hexa[index].bgPath = ":/src/images/Agent/Billy.png";
                 pl1_ag1_clicked = false;
@@ -540,7 +549,8 @@ void playingGameWindow::hexagonClicked(int index){
             targetSelection = false ;
             startSelection = true ;
             playerRound = 2 ;
-            ui->messageBox->setText("Round 2");
+            message = "Round " + QString::number(playerRound);
+            ui->messageBox->setText(message);
 
             //شرط این که زمین نباشه و یا آب باشه یا سنگ
         }  else if(startSelection == false && targetSelection == true && hexa[index].bgPath != ":/src/images/ground.jpg"
@@ -551,16 +561,27 @@ void playingGameWindow::hexagonClicked(int index){
             targetSelection = false;
             startSelection = true;
             playerRound = 2;
-            ui->messageBox->setText("Round 2");
+            message = "Round " + QString::number(playerRound);
+            ui->messageBox->setText(message);
 
             // شرط اینکه روی ایجنت خودمون یا حریف کلیک کنیم
         }   else if(startSelection == false && targetSelection == true && (hexa[index].id == "1" || hexa[index].id == "2" )){
+            qDebug() << "player round 1 attacked";
             targetIndex = index;
             bfsSet(startHex, targetIndex , 41);
             targetSelection = false;
             startSelection = true;
-            playerRound = 2;
-            ui->messageBox->setText("Round 2");
+            if(!finishedGame)
+                ui->messageBox->setText(message);
+            else if(finishedGame){
+                if(player1Win)
+                    message = "Player 1 Wins!";
+
+                if(player2Win)
+                    message = "Player 2 Wins!";
+
+                ui->messageBox->setText(message);
+            }
         }
 
     } else if(playerRound == 2){
@@ -660,53 +681,63 @@ void playingGameWindow::hexagonClicked(int index){
 
             // شرط اینکه هدف انتخابی برای حرکت زمین باشه
         }  else if(hexa[index].id == "2" && hexa[index].bgPath != ":/src/images/ground.jpg" && startSelection ){
+
             ui->messageBox->setText("now select your target");
             targetSelection = true;
             startHex = index ;
             startSelection = false ;
 
-        } else if(startSelection == false && targetSelection == true){
-
+        } else if(startSelection == false && targetSelection == true && hexa[index].bgPath == ":/src/images/ground.jpg"){
             targetIndex = index ;
             bfsSet(startHex, targetIndex , 41);
             targetSelection = false ;
             startSelection = true ;
             playerRound = 1 ;
-            ui->messageBox->setText("Round 1");
+            message = "Round " + QString::number(playerRound);
+            ui->messageBox->setText(message);
 
             //شرط این که زمین نباشه و یا آب باشه یا سنگ
         } else if(startSelection == false && targetSelection == true && hexa[index].bgPath != ":/src/images/ground.jpg"
                    && (hexa[index].bgPath == ":/src/images/water.jpg" || hexa[index].bgPath == ":/src/images/stone.jpg")){
-
             targetIndex = index;
             waterBgChanged = true;
             bfsSet(startHex, targetIndex , 41);
             targetSelection = false;
             startSelection = true;
             playerRound = 1;
-            ui->messageBox->setText("Round 1");
+            message = "Round " + QString::number(playerRound);
+            ui->messageBox->setText(message);
 
             // شرط اینکه روی ایجنت خودمون یا حریف کلیک کنیم
-        }   else if(startSelection == false && targetSelection == true && (hexa[index].id == "1" || hexa[index].id == "2" )){
-
+        }  else if(startSelection == false && targetSelection == true && (hexa[index].id == "1" || hexa[index].id == "2" )){
+            qDebug() << "player round 2 attacked";
             targetIndex = index;
             bfsSet(startHex, targetIndex , 41);
             targetSelection = false;
             startSelection = true;
-            playerRound = 1;
-            ui->messageBox->setText("Round 1");
-        }
+            if(!finishedGame)
+                ui->messageBox->setText(message);
+            else if(finishedGame){
+                if(player1Win)
+                    message = "Player 1 Wins!";
 
+                if(player2Win)
+                    message = "Player 2 Wins!";
+
+                ui->messageBox->setText(message);
+            }
+        }
     }
 
     roundCounter++;
+
     if(roundCounter == 4)
         playerRound = 2;
     if(roundCounter == 8){
         playerRound = 1;
         agentSelector = false;
 
-        //آپدیت  آیدی همه شش ضلعی هایی که زمین هستن بعد از انتخاب ایجنتها
+        //آپدیت  آیدی همه شش ضلعی هایی که زمین هستن بعد از انتخاب ایجنتها دیگه آیدی شون تغییر میکنه
         for(int i = 0; i < 41; i++){
             if(hexa[i].bgPath == ":/src/images/ground.jpg" && hexa[i].id == "1") {
 
@@ -960,6 +991,8 @@ void playingGameWindow::bfsSet(int startIndex, int targetIndex, int hexCount) {
                 updateHexButton(startIndex);
                 return;
             }
+
+            // شرط برای اینکه هدف یکی از ایجنت ها بود و حمله انجام شود
             else if (hexa[targetIndex].id == "2" || hexa[targetIndex].id == "1") {
                 if(playerRound == 1){
                     if(hexa[startIndex].bgPath == ":/src/images/Agent/Angus.png") hexa[startIndex].agent = &Angus1;
@@ -1062,6 +1095,7 @@ void playingGameWindow::bfsSet(int startIndex, int targetIndex, int hexCount) {
                 }
 
 
+                //اگر هدف از پلیر مخالف بود حمله انجام شود
                 if (hexa[targetIndex].id != QString::number(playerRound)) {
                     qDebug() << "⚔️ Target is another agent!";
 
@@ -1086,23 +1120,69 @@ void playingGameWindow::bfsSet(int startIndex, int targetIndex, int hexCount) {
 
 
                     if (!neighborInfo.empty()) {
+                        //پیدا کردن زمین خالی رندوم
                         int r = std::rand() % neighborInfo.size();
                         QString chosenID = neighborInfo[r].first;
                         int chosenIndex = neighborInfo[r].second;
-
+                        //نشستن در زمین زندوم کنار هدف
                         hexa[chosenIndex].bgPath = hexa[startIndex].bgPath;
                         hexa[chosenIndex].id = hexa[startIndex].id;
                         hexa[chosenIndex].agent = hexa[startIndex].agent;
                         updateHexButton(chosenIndex);
 
-
+                        // تغییر hp
                         if (hexa[chosenIndex].agent && hexa[targetIndex].agent) {
-                            Agent* attacker = hexa[startIndex].agent;
+                            Agent* attacker = hexa[chosenIndex].agent;
                             Agent* defender = hexa[targetIndex].agent;
 
                             attacker->setHP(attacker->getHP() - (defender->getDamage() / 2));
                             defender->setHP(defender->getHP() - attacker->getDamage());
+                            qDebug() << startIndex ;
 
+
+                            if(attacker->getHP() < 1){
+                                attacker->setHP(0);
+                                hexa[chosenIndex].bgPath = ":/src/images/ground.jpg";
+                                hexa[chosenIndex].id = ".";
+                                updateHexButton(chosenIndex);
+
+                                if(playerRound == 1){
+                                    pl1AgentNumber --;
+                                     if(pl1AgentNumber < 1){
+                                        finishedGame = true;
+                                        player2Win = true;
+                                     }
+                                }
+                                if(playerRound == 2){
+                                    pl2AgentNumber --;
+                                    if(pl2AgentNumber < 1){
+                                        finishedGame = true;
+                                        player1Win = true;
+                                    }
+                                }
+                            }
+                            if(defender->getHP() < 1){
+                                defender->setHP(0);
+                                hexa[targetIndex].bgPath = ":/src/images/ground.jpg";
+                                hexa[targetIndex].id = ".";
+                                updateHexButton(targetIndex);
+
+                                if(playerRound == 1){
+                                    pl2AgentNumber --;
+                                    if(pl2AgentNumber < 1){
+                                        finishedGame = true;
+                                        player1Win = true;
+                                    }
+                                }
+                                if(playerRound == 2){
+                                    pl1AgentNumber --;
+                                    if(pl1AgentNumber < 1){
+                                        finishedGame = true;
+                                        player2Win = true;
+                                    }
+                                }
+                            }
+                            // آپدیت اطلاعات ایجنتها در صورت حمله
                             if (agentTextBrowsers.contains(attacker)){
                                 agentTextBrowsers[attacker]->setText(QString::number(attacker->getHP()));
                                 agentTextBrowsers[attacker]->setStyleSheet("font-size: 6pt; color: white; font-weight: bold;");
@@ -1117,14 +1197,24 @@ void playingGameWindow::bfsSet(int startIndex, int targetIndex, int hexCount) {
                         hexa[startIndex].id = ".";
                         hexa[startIndex].agent = nullptr;
                         updateHexButton(startIndex);
+                        if(playerRound == 1)
+                            playerRound = 2;
+                        else if(playerRound == 2)
+                            playerRound = 1 ;
 
+                        qDebug() << "Round changed to " + QString::number(playerRound) ;
+                        message = "Round " + QString::number(playerRound);
 
+                    // اگر کنار ایجنت مورد حمله زمین خالی برای نشستن نبود
                     } else {
                         qDebug() << "No ground neighbors available";
                     }
                 }
-
-
+                // اگر هدف از پلیر مخالف نبود
+                else if (hexa[targetIndex].id == QString::number(playerRound)) {
+                    message = "You Can't attack on your self";
+                    qDebug() << "You Can't attack on your self";
+                }
             }
             else {
                 qDebug() << "  ❌ Target found but cannot stand on it!";
@@ -1164,6 +1254,7 @@ void playingGameWindow::bfsSet(int startIndex, int targetIndex, int hexCount) {
             }
             else if (hexa[nIndex].bgPath == ":/src/images/water.jpg") {
                 if (standOnWater || waterWalking) canPass = true;
+
             }
             else if (hexa[nIndex].bgPath == ":/src/images/stone.jpg") {
                 if (standOnRock || rockWalking) canPass = true;
@@ -1182,10 +1273,9 @@ void playingGameWindow::bfsSet(int startIndex, int targetIndex, int hexCount) {
             }
         }
     }
-
-    qDebug() << "❌ Target not reachable";
 }
 
+// متد پیدا کردن همسایه های هر شش ضلعی
 
 void playingGameWindow::findNeighbors() {
     int N = 41;
@@ -1278,7 +1368,7 @@ void playingGameWindow::updateHexButton(int index) {
 
 void playingGameWindow::on_pl1_ag1_btn_clicked()
 {
-    if(playerRound == 1 && agentSelector && pl1_ag1_selected){
+    if(playerRound == 1 && agentSelector && pl1_ag1_selected ){
         pl1_ag1_clicked = true;
 
         for(int i = 0; i < 41; i++){
@@ -1289,6 +1379,7 @@ void playingGameWindow::on_pl1_ag1_btn_clicked()
         }
         pl1_ag1_selected = false;
         ui->messageBox->setText("Select Hex On The Map");
+
     } else {
         if(!pl1_ag1_selected)
             ui->messageBox->setText("already selected");
@@ -1811,7 +1902,6 @@ void playingGameWindow::on_pl2_ag1_btn_clicked()
 {
     if(playerRound == 2 && agentSelector && pl2_ag1_selected){
         pl2_ag1_clicked = true;
-
         for(int i = 0; i < 41; i++){
             if(hexa[i].id == "2"  && hexa[i].bgPath == ":/src/images/ground.jpg"){
                 hexa[i].bgPath = ":/src/images/select_ground.jpg";
@@ -2333,9 +2423,6 @@ void playingGameWindow::on_pl2_ag24_btn_clicked()
             ui->messageBox->setText("It's Not Your Turn");
     }
 }
-
-
-
 
 
 playingGameWindow::~playingGameWindow()

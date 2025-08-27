@@ -94,7 +94,7 @@ border-radius:20px;
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>-1495</y>
+        <y>0</y>
         <width>295</width>
         <height>1936</height>
        </rect>
@@ -4688,7 +4688,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
     <property name="geometry">
      <rect>
       <x>320</x>
-      <y>460</y>
+      <y>440</y>
       <width>320</width>
       <height>40</height>
      </rect>

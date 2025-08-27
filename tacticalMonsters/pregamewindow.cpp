@@ -29,8 +29,12 @@ void preGameWindow::on_galleryButton_clicked()
 {
     if(!gallerywindow){
         gallerywindow = new galleryWindow;
+        connect(gallerywindow, &galleryWindow::backToPreGameWindow, this, [this](){
+            this->show();
+        });
     }
     gallerywindow->show();
     this->hide();
 }
+
 
