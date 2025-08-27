@@ -70,9 +70,9 @@
     <widget class="QScrollArea" name="scrollArea">
      <property name="geometry">
       <rect>
-       <x>30</x>
+       <x>10</x>
        <y>60</y>
-       <width>181</width>
+       <width>201</width>
        <height>441</height>
       </rect>
      </property>
@@ -94,8 +94,8 @@ border-radius:20px;
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>0</y>
-        <width>179</width>
+        <y>-1363</y>
+        <width>184</width>
         <height>1902</height>
        </rect>
       </property>
@@ -429,7 +429,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:6pt; font-weight:700;&quot;&gt;HP: 400&lt;br /&gt;Mobility: 2&lt;br /&gt;Damage: 100&lt;br /&gt;AttackRange: 1&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="pushButton_5">
+         <widget class="QPushButton" name="pl1_ag5_btn">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -497,7 +497,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:6pt; font-weight:700;&quot;&gt;HP: 320&lt;br /&gt;Mobility: 2&lt;br /&gt;Damage: 90&lt;br /&gt;AttackRange: 2&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="pushButton_6">
+         <widget class="QPushButton" name="pl1_ag6_btn">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -565,7 +565,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:6pt; font-weight:700;&quot;&gt;HP: 320&lt;br /&gt;Mobility: 3&lt;br /&gt;Damage: 100&lt;br /&gt;AttackRange: 1&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="pushButton_7">
+         <widget class="QPushButton" name="pl1_ag7_btn">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -633,7 +633,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:6pt; font-weight:700;&quot;&gt;HP: 320&lt;br /&gt;Mobility: 3&lt;br /&gt;Damage: 100&lt;br /&gt;AttackRange: 1&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="pushButton_8">
+         <widget class="QPushButton" name="pl1_ag8_btn">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -701,7 +701,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:6pt; font-weight:700;&quot;&gt;HP: 320&lt;br /&gt;Mobility: 3&lt;br /&gt;Damage: 110&lt;br /&gt;AttackRange: 1&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="pushButton_9">
+         <widget class="QPushButton" name="pl1_ag9_btn">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -769,7 +769,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:6pt; font-weight:700;&quot;&gt;HP: 400&lt;br /&gt;Mobility: 2&lt;br /&gt;Damage: 120&lt;br /&gt;AttackRange: 1&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="pushButton_10">
+         <widget class="QPushButton" name="pl1_ag10_btn">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -837,7 +837,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:6pt; font-weight:700;&quot;&gt;HP: 320&lt;br /&gt;Mobility: 2&lt;br /&gt;Damage: 130&lt;br /&gt;AttackRange: 1&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="pushButton_11">
+         <widget class="QPushButton" name="pl1_ag11_btn">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -905,7 +905,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:6pt; font-weight:700;&quot;&gt;HP: 400&lt;br /&gt;Mobility: 2&lt;br /&gt;Damage: 80&lt;br /&gt;AttackRange: 1&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="pushButton_12">
+         <widget class="QPushButton" name="pl1_ag12_btn">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -973,7 +973,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:6pt; font-weight:700;&quot;&gt;HP: 320&lt;br /&gt;Mobility: 2&lt;br /&gt;Damage: 90&lt;br /&gt;AttackRange: 1&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="pushButton_13">
+         <widget class="QPushButton" name="pl1_ag13_btn">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -1041,7 +1041,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:6pt; font-weight:700;&quot;&gt;HP: 400&lt;br /&gt;Mobility: 2&lt;br /&gt;Damage: 100&lt;br /&gt;AttackRange: 1&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="pushButton_14">
+         <widget class="QPushButton" name="pl1_ag14_btn">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -1109,7 +1109,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:6pt; font-weight:700;&quot;&gt;HP: 240&lt;br /&gt;Mobility: 2&lt;br /&gt;Damage: 100&lt;br /&gt;AttackRange: 2-3&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="pushButton_15">
+         <widget class="QPushButton" name="pl1_ag15_btn">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -1177,7 +1177,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:6pt; font-weight:700;&quot;&gt;HP: 160&lt;br /&gt;Mobility: 2&lt;br /&gt;Damage: 100&lt;br /&gt;AttackRange: 2&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="pushButton_16">
+         <widget class="QPushButton" name="pl1_ag16_btn">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -1245,7 +1245,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:6pt; font-weight:700;&quot;&gt;HP: 320&lt;br /&gt;Mobility: 2&lt;br /&gt;Damage: 140&lt;br /&gt;AttackRange: 2&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="pushButton_17">
+         <widget class="QPushButton" name="pl1_ag17_btn">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -1313,7 +1313,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:6pt; font-weight:700;&quot;&gt;HP: 280&lt;br /&gt;Mobility: 2&lt;br /&gt;Damage: 80&lt;br /&gt;AttackRange: 2&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="pushButton_18">
+         <widget class="QPushButton" name="pl1_ag18_btn">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -1381,7 +1381,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:6pt; font-weight:700;&quot;&gt;HP: 400&lt;br /&gt;Mobility: 2&lt;br /&gt;Damage: 100&lt;br /&gt;AttackRange: 1&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="pushButton_19">
+         <widget class="QPushButton" name="pl1_ag19_btn">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -1449,7 +1449,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:6pt; font-weight:700;&quot;&gt;HP: 260&lt;br /&gt;Mobility: 2&lt;br /&gt;Damage: 80&lt;br /&gt;AttackRange: 2&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="pushButton_20">
+         <widget class="QPushButton" name="pl1_ag20_btn">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -1517,7 +1517,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:6pt; font-weight:700;&quot;&gt;HP: 400&lt;br /&gt;Mobility: 2&lt;br /&gt;Damage: 100&lt;br /&gt;AttackRange: 1&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="pushButton_21">
+         <widget class="QPushButton" name="pl1_ag21_btn">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -1585,7 +1585,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:6pt; font-weight:700;&quot;&gt;HP: 320&lt;br /&gt;Mobility: 3&lt;br /&gt;Damage: 120&lt;br /&gt;AttackRange: 1&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="pushButton_22">
+         <widget class="QPushButton" name="pl1_ag22_btn">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -1653,7 +1653,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:6pt; font-weight:700;&quot;&gt;HP: 320&lt;br /&gt;Mobility: 3&lt;br /&gt;Damage: 100&lt;br /&gt;AttackRange: 1&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="pushButton_23">
+         <widget class="QPushButton" name="pl1_ag23_btn">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -1721,7 +1721,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:6pt; font-weight:700;&quot;&gt;HP: 240&lt;br /&gt;Mobility: 3&lt;br /&gt;Damage: 120&lt;br /&gt;AttackRange: 2&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="pushButton_24">
+         <widget class="QPushButton" name="pl1_ag24_btn">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -1751,7 +1751,7 @@ background-size:cover;</string>
       <rect>
        <x>750</x>
        <y>60</y>
-       <width>179</width>
+       <width>201</width>
        <height>451</height>
       </rect>
      </property>
@@ -1770,8 +1770,8 @@ border-radius:20px;
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>0</y>
-        <width>179</width>
+        <y>-1451</y>
+        <width>184</width>
         <height>1902</height>
        </rect>
       </property>
@@ -2112,7 +2112,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:6pt; font-weight:700;&quot;&gt;HP: 400&lt;br /&gt;Mobility: 2&lt;br /&gt;Damage: 100&lt;br /&gt;AttackRange: 1&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="pushButton_29">
+         <widget class="QPushButton" name="pl2_ag5_btn">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -2180,7 +2180,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:6pt; font-weight:700;&quot;&gt;HP: 320&lt;br /&gt;Mobility: 2&lt;br /&gt;Damage: 90&lt;br /&gt;AttackRange: 2&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="pushButton_30">
+         <widget class="QPushButton" name="pl2_ag6_btn">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -2248,7 +2248,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:6pt; font-weight:700;&quot;&gt;HP: 320&lt;br /&gt;Mobility: 3&lt;br /&gt;Damage: 100&lt;br /&gt;AttackRange: 1&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="pushButton_31">
+         <widget class="QPushButton" name="pl2_ag7_btn">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -2316,7 +2316,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:6pt; font-weight:700;&quot;&gt;HP: 320&lt;br /&gt;Mobility: 3&lt;br /&gt;Damage: 100&lt;br /&gt;AttackRange: 1&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="pushButton_32">
+         <widget class="QPushButton" name="pl2_ag8_btn">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -2384,7 +2384,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:6pt; font-weight:700;&quot;&gt;HP: 320&lt;br /&gt;Mobility: 3&lt;br /&gt;Damage: 110&lt;br /&gt;AttackRange: 1&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="pushButton_33">
+         <widget class="QPushButton" name="pl2_ag9_btn">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -2452,7 +2452,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:6pt; font-weight:700;&quot;&gt;HP: 400&lt;br /&gt;Mobility: 2&lt;br /&gt;Damage: 120&lt;br /&gt;AttackRange: 1&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="pushButton_34">
+         <widget class="QPushButton" name="pl2_ag10_btn">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -2520,7 +2520,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:6pt; font-weight:700;&quot;&gt;HP: 320&lt;br /&gt;Mobility: 2&lt;br /&gt;Damage: 130&lt;br /&gt;AttackRange: 1&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="pushButton_35">
+         <widget class="QPushButton" name="pl2_ag11_btn">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -2588,7 +2588,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:6pt; font-weight:700;&quot;&gt;HP: 400&lt;br /&gt;Mobility: 2&lt;br /&gt;Damage: 80&lt;br /&gt;AttackRange: 1&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="pushButton_36">
+         <widget class="QPushButton" name="pl2_ag12_btn">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -2656,7 +2656,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:6pt; font-weight:700;&quot;&gt;HP: 320&lt;br /&gt;Mobility: 2&lt;br /&gt;Damage: 90&lt;br /&gt;AttackRange: 1&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="pushButton_37">
+         <widget class="QPushButton" name="pl2_ag13_btn">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -2724,7 +2724,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:6pt; font-weight:700;&quot;&gt;HP: 400&lt;br /&gt;Mobility: 2&lt;br /&gt;Damage: 100&lt;br /&gt;AttackRange: 1&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="pushButton_38">
+         <widget class="QPushButton" name="pl2_ag14_btn">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -2792,7 +2792,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:6pt; font-weight:700;&quot;&gt;HP: 240&lt;br /&gt;Mobility: 2&lt;br /&gt;Damage: 100&lt;br /&gt;AttackRange: 2-3&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="pushButton_39">
+         <widget class="QPushButton" name="pl2_ag15_btn">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -2860,7 +2860,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:6pt; font-weight:700;&quot;&gt;HP: 160&lt;br /&gt;Mobility: 2&lt;br /&gt;Damage: 100&lt;br /&gt;AttackRange: 2&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="pushButton_40">
+         <widget class="QPushButton" name="pl2_ag16_btn">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -2928,7 +2928,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:6pt; font-weight:700;&quot;&gt;HP: 320&lt;br /&gt;Mobility: 2&lt;br /&gt;Damage: 140&lt;br /&gt;AttackRange: 2&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="pushButton_41">
+         <widget class="QPushButton" name="pl2_ag17_btn">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -2996,7 +2996,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:6pt; font-weight:700;&quot;&gt;HP: 280&lt;br /&gt;Mobility: 2&lt;br /&gt;Damage: 80&lt;br /&gt;AttackRange: 2&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="pushButton_42">
+         <widget class="QPushButton" name="pl2_ag18_btn">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -3064,7 +3064,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:6pt; font-weight:700;&quot;&gt;HP: 400&lt;br /&gt;Mobility: 2&lt;br /&gt;Damage: 100&lt;br /&gt;AttackRange: 1&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="pushButton_43">
+         <widget class="QPushButton" name="pl2_ag19_btn">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -3132,7 +3132,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:6pt; font-weight:700;&quot;&gt;HP: 260&lt;br /&gt;Mobility: 2&lt;br /&gt;Damage: 80&lt;br /&gt;AttackRange: 2&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="pushButton_44">
+         <widget class="QPushButton" name="pl2_ag20_btn">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -3200,7 +3200,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:6pt; font-weight:700;&quot;&gt;HP: 400&lt;br /&gt;Mobility: 2&lt;br /&gt;Damage: 100&lt;br /&gt;AttackRange: 1&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="pushButton_45">
+         <widget class="QPushButton" name="pl2_ag21_btn">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -3268,7 +3268,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:6pt; font-weight:700;&quot;&gt;HP: 320&lt;br /&gt;Mobility: 3&lt;br /&gt;Damage: 120&lt;br /&gt;AttackRange: 1&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="pushButton_46">
+         <widget class="QPushButton" name="pl2_ag22_btn">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -3336,7 +3336,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:6pt; font-weight:700;&quot;&gt;HP: 320&lt;br /&gt;Mobility: 3&lt;br /&gt;Damage: 100&lt;br /&gt;AttackRange: 1&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="pushButton_47">
+         <widget class="QPushButton" name="pl2_ag23_btn">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -3404,7 +3404,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:6pt; font-weight:700;&quot;&gt;HP: 240&lt;br /&gt;Mobility: 3&lt;br /&gt;Damage: 120&lt;br /&gt;AttackRange: 2&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="pushButton_48">
+         <widget class="QPushButton" name="pl2_ag24_btn">
           <property name="geometry">
            <rect>
             <x>10</x>
